@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.rememberScaffoldState
@@ -17,12 +16,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.qr_hitu.R
-import com.example.qr_hitu.ViewModels.MalfunctionViewModel
-import com.example.qr_hitu.ViewModels.ScannerViewModel
-import com.example.qr_hitu.ViewModels.ViewModel1
-import com.example.qr_hitu.ViewModels.ViewModel2
+import com.example.qr_hitu.presentation.viewModels.MalfunctionViewModel
+import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
+import com.example.qr_hitu.presentation.viewModels.ViewModel1
+import com.example.qr_hitu.presentation.viewModels.ViewModel2
 import com.example.qr_hitu.components.*
-import com.example.qr_hitu.theme.*
+import com.example.qr_hitu.ui.theme.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
@@ -42,7 +41,7 @@ fun ScaffoldLayouts(navController: NavHostController, settingsManager: SettingsM
     val currentDestination = currentBackStack?.destination
     val destinationRoute = currentDestination?.route ?: Login.route
 
-    Scaffold(
+    androidx.compose.material.Scaffold(
         topBar = {
             //  Condição que verifica em que ecrã estamos e chama a topbar indicada
             when {
@@ -63,8 +62,7 @@ fun ScaffoldLayouts(navController: NavHostController, settingsManager: SettingsM
             when{
                 destinationRoute.contains(TabScreen.route) || destinationRoute.contains(ScanAdmin.route) || destinationRoute.contains(AdminChoices.route) -> BottomBar(navController = navController)
             }
-        },
-        scaffoldState = scaffoldState,
+        }
     ) { innerPadding ->
             //  Navegador da aplicação
             QrHituNavHost(
