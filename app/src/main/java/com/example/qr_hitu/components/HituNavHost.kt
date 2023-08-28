@@ -18,14 +18,14 @@ import com.example.qr_hitu.functions.ConnectionState
 import com.example.qr_hitu.functions.SettingsManager
 import com.example.qr_hitu.functions.WifiWarn
 import com.example.qr_hitu.functions.connectivityState
-import com.example.qr_hitu.presentation.LoadingScreen
-import com.example.qr_hitu.presentation.adminScreens.AdminChoices
-import com.example.qr_hitu.presentation.adminScreens.create.QrCreateFinal
-import com.example.qr_hitu.presentation.adminScreens.create.QrCreatePhase1
-import com.example.qr_hitu.presentation.adminScreens.create.QrCreatePhase2
-import com.example.qr_hitu.presentation.adminScreens.scannerAdm.ScannerAdminInfo
-import com.example.qr_hitu.presentation.adminScreens.scannerAdm.ScannerAdminInfoUpdate
-import com.example.qr_hitu.presentation.adminScreens.scannerAdm.ScannerAdminScreen
+import com.example.qr_hitu.presentation.profScreens.loading.LoadingScreen
+import com.example.qr_hitu.presentation.adminScreens.adminChoices.AdminChoices
+import com.example.qr_hitu.presentation.adminScreens.create.phasefinal.QrCreateFinal
+import com.example.qr_hitu.presentation.adminScreens.create.phase1.QrCreatePhase1
+import com.example.qr_hitu.presentation.adminScreens.create.phase2.QrCreatePhase2
+import com.example.qr_hitu.presentation.adminScreens.scannerAdm.info.ScannerAdminInfo
+import com.example.qr_hitu.presentation.adminScreens.scannerAdm.update.ScannerAdminInfoUpdate
+import com.example.qr_hitu.presentation.adminScreens.scannerAdm.scanner.ScannerAdminScreen
 import com.example.qr_hitu.presentation.adminScreens.tabLists.TabLayout
 import com.example.qr_hitu.presentation.adminScreens.tabLists.malfunctionsList.MalfInfo
 import com.example.qr_hitu.presentation.adminScreens.tabLists.malfunctionsList.MalfList
@@ -39,9 +39,9 @@ import com.example.qr_hitu.presentation.menu.About
 import com.example.qr_hitu.presentation.menu.Manual
 import com.example.qr_hitu.presentation.menu.SettingsOptions
 import com.example.qr_hitu.presentation.profScreens.missingQr.MQRLocal
-import com.example.qr_hitu.presentation.profScreens.PrimaryChoice
-import com.example.qr_hitu.presentation.profScreens.scanner.ScannerInput
-import com.example.qr_hitu.presentation.profScreens.scanner.ScannerTeachScreen
+import com.example.qr_hitu.presentation.profScreens.userChoices.PrimaryChoice
+import com.example.qr_hitu.presentation.profScreens.scannerUser.input.ScannerInput
+import com.example.qr_hitu.presentation.profScreens.scannerUser.scanner.ScannerTeachScreen
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 //Função de navegação da app
@@ -57,7 +57,7 @@ fun QrHituNavHost(
     viewModelMF: MalfunctionViewModel,
     switch: MutableState<String>,
     modifier: Modifier
-){
+) {
     //Variáveis usadas para o controlo de conexão á internet da app
     val netstate by connectivityState()
     val isConnected = netstate === ConnectionState.Available
@@ -71,84 +71,84 @@ fun QrHituNavHost(
         NavHost(
             navController = navController,
             startDestination = startDestination
-        ){
-            composable(route = Login.route){
-                LoginScreen(navController = navController, settingsManager = settingsManager)
+        ) {
+            composable(Login.route) {
+                LoginScreen(navController, settingsManager)
             }
-            composable(route = ScanProf.route){
-                ScannerTeachScreen(navController = navController, viewModel = viewModelSA)
+            composable(ScanProf.route) {
+                ScannerTeachScreen(navController, viewModelSA)
             }
-            composable(ScanInput.route){
-                ScannerInput(navController = navController, viewModel = viewModelSA)
+            composable(ScanInput.route) {
+                ScannerInput(navController, viewModelSA, settingsManager)
             }
-            composable(MalfList.route){
-                MalfList(navController = navController, viewModel = viewModelMF)
+            composable(MalfList.route) {
+                MalfList(navController, viewModelMF)
             }
-            composable(MalfInfo.route){
-                MalfInfo(navController = navController, viewModel = viewModelMF)
+            composable(MalfInfo.route) {
+                MalfInfo(navController, viewModelMF)
             }
-            composable(Create1.route){
-                QrCreatePhase1(navController = navController, viewModel = viewModel1)
+            composable(Create1.route) {
+                QrCreatePhase1(navController, viewModel1)
             }
-            composable(Create2.route){
-                QrCreatePhase2(navController = navController, viewModel = viewModel2)
+            composable(Create2.route) {
+                QrCreatePhase2(navController, viewModel2)
             }
-            composable(Create3.route){
-                QrCreateFinal(navController = navController, viewModel1 = viewModel1, viewModel2 = viewModel2)
+            composable(Create3.route) {
+                QrCreateFinal(navController, viewModel1, viewModel2)
             }
-            composable(Create3.route){
-                QrCreateFinal(navController = navController, viewModel1 = viewModel1, viewModel2 = viewModel2)
+            composable(Create3.route) {
+                QrCreateFinal(navController, viewModel1, viewModel2)
             }
-            composable(ChooseQr.route){
-                ChooseQr(navController = navController, viewModel = viewModel1)
+            composable(ChooseQr.route) {
+                ChooseQr(navController, viewModel1)
             }
-            composable(TransferQr.route){
-                TransferQr(navController = navController, viewModel = viewModel1)
+            composable(TransferQr.route) {
+                TransferQr(navController, viewModel1)
             }
-            composable(AdminChoices.route){
-                AdminChoices(navController = navController)
+            composable(AdminChoices.route) {
+                AdminChoices(navController)
             }
-            composable(ScanAdmin.route){
-                ScannerAdminScreen(navController = navController, viewModel = viewModelSA, settingsManager = settingsManager)
+            composable(ScanAdmin.route) {
+                ScannerAdminScreen(navController, viewModelSA, settingsManager)
             }
-            composable(ScannerAdminInfo.route){
-                ScannerAdminInfo(navController = navController, viewModelSA)
+            composable(ScannerAdminInfo.route) {
+                ScannerAdminInfo(navController, viewModelSA, settingsManager)
             }
-            composable(ScannerAdminInfoUpdate.route){
-                ScannerAdminInfoUpdate(navController = navController, viewModelSA)
+            composable(ScannerAdminInfoUpdate.route) {
+                ScannerAdminInfoUpdate(navController, viewModelSA)
             }
-            composable(SettingOptions.route){
-                SettingsOptions(navController = navController, settingsManager = settingsManager, switch = switch)
+            composable(SettingOptions.route) {
+                SettingsOptions(navController, settingsManager, switch)
             }
-            composable(Manual.route){
-                Manual(navController = navController, settingsManager = settingsManager)
+            composable(Manual.route) {
+                Manual(navController, settingsManager)
             }
-            composable(Loading.route){
-                LoadingScreen(navController = navController, settingsManager = settingsManager)
+            composable(Loading.route) {
+                LoadingScreen(navController, settingsManager)
             }
-            composable(UserChoices.route){
-                PrimaryChoice(navController = navController)
+            composable(UserChoices.route) {
+                PrimaryChoice(navController, settingsManager)
             }
-            composable(MQRLocal.route){
-                MQRLocal(navController = navController, viewModel = viewModelSA)
+            composable(MQRLocal.route) {
+                MQRLocal(navController, viewModelSA)
             }
-            composable(RecentScanList.route){
-                RecentScanList(navController = navController, settingsManager = settingsManager, viewModel = viewModelSA)
+            composable(RecentScanList.route) {
+                RecentScanList(navController, settingsManager, viewModelSA)
             }
-            composable(MissingQrList.route){
-                MissingQrList(navController = navController)
+            composable(MissingQrList.route) {
+                MissingQrList(navController)
             }
-            composable(TabScreen.route){
-                TabLayout(navController = navController, viewModelSA = viewModelSA, settingsManager = settingsManager, viewModelMF = viewModelMF)
+            composable(TabScreen.route) {
+                TabLayout(navController, settingsManager, viewModelSA, viewModelMF)
             }
-            composable(ForgotPass.route){
-                ForgotPass(navController = navController)
+            composable(ForgotPass.route) {
+                ForgotPass(navController)
             }
-            composable(About.route){
-                About(navController = navController)
+            composable(About.route) {
+                About(navController)
             }
-            composable(WifiWarn.route){
-                WifiWarn(navController = navController)
+            composable(WifiWarn.route) {
+                WifiWarn(navController)
             }
         }
     }

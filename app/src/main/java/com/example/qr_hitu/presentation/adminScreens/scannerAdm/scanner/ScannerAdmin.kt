@@ -1,6 +1,7 @@
-package com.example.qr_hitu.presentation.profScreens.scanner
+package com.example.qr_hitu.presentation.adminScreens.scannerAdm.scanner
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
@@ -17,38 +18,56 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import com.example.qr_hitu.R
 import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
-import com.example.qr_hitu.components.ScanProf
-import com.example.qr_hitu.functions.Malf_ErrorDialogs
+import com.example.qr_hitu.components.ScanAdmin
+import com.example.qr_hitu.components.ScannerAdminInfo
+import com.example.qr_hitu.functions.WarningDialog
+import com.example.qr_hitu.functions.SettingsManager
 import com.example.qr_hitu.functions.decryptAES
 import com.example.qr_hitu.functions.encryptionKey
 import com.example.qr_hitu.functions.isEncryptedString
+import com.example.qr_hitu.functions.loadListFromSettings
+import com.example.qr_hitu.functions.saveListToSettings
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.Executors
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-
-//  Tela com a camara do utilizador para dar scan nos QR Codes
+//  Tela de Scanner do admin
+@SuppressLint("MutableCollectionMutableState")
 @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
 @Composable
-fun ScannerTeachScreen(navController: NavController, viewModel: ScannerViewModel){
+fun ScannerAdminScreen(navController: NavController, viewModel: ScannerViewModel, settingsManager: SettingsManager) {
+
+    //  Lista dos QR Recentes
+    val qrList = remember { mutableStateListOf<String>() }
+    val qrSet = remember { mutableStateOf(mutableSetOf<String>()) }
+
+    LaunchedEffect(Unit) {
+        qrList.addAll(loadListFromSettings(settingsManager))
+        qrSet.value.addAll(qrList)
+    }
+
+    //  Mostrar Dialog
+    val show= remember { mutableStateOf(false) }
+
     //  Pede permissão para usar a camara
     var permission = true
     val requestPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         permission = isGranted
     }
-
-    //  Mostrar Dialog
-    val show = remember { mutableStateOf(0) }
 
     //  Definições para a camara
     val context = LocalContext.current as Activity
@@ -110,18 +129,42 @@ fun ScannerTeachScreen(navController: NavController, viewModel: ScannerViewModel
                         if (isEncryptedString(value)) {
                             //  Desencripta o valor no QR
                             val decodedValue = decryptAES(value, encryptionKey)
+
                             //  Verifica se o conteúdo não coincide
                             if(!Regex("""Bloco \w+,Sala \p{all}+,\w+\w+""").containsMatchIn(decodedValue)){
                                 //  Mostra Dialog de erro
-                                show.value = 2
+                                show.value = true
                             }else{
-                                //  Guarda os dados do QR e mostra Dialog
+                                //  Vai buscar a data atual
+                                val date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+
+                                //  Verifica se o QR já estava na lista de recentes
+                                if (qrSet.value.any{ it.startsWith(decodedValue) }) {
+                                    //  Apaga da lista de recentes
+                                    qrList.removeAll { it.startsWith(decodedValue) }
+                                }
+
+                                //  Adiciona na lista de recentes
+                                qrList.add("$decodedValue,$date")
+                                qrSet.value.add("$decodedValue,$date")
+
+                                //  Verifica se a lista já é maior que 5 e apaga o mais antigo
+                                if (qrList.size > 5) {
+                                    val oldestValue = qrList.first()
+                                    qrList.remove(oldestValue)
+                                    qrSet.value.remove(oldestValue)
+                                }
+
+                                //  Guarda a lista de recentes
+                                saveListToSettings(settingsManager, qrList)
+
+                                //  Guarda os dados do QR e vai para a tela de info
                                 viewModel.setMyData(decodedValue)
-                                show.value = 1
+                                navController.navigate(ScannerAdminInfo.route)
                             }
                         } else {
-                            //  Mostra Dialog de erro
-                            show.value = 2
+                            //  Mostra QR de erro
+                            show.value = true
                         }
                     }
                 }
@@ -174,7 +217,7 @@ fun ScannerTeachScreen(navController: NavController, viewModel: ScannerViewModel
         onDispose {
             //  Se trocarmos de tela ativa
             //  Esta condição foi necessária para evitar que sempre que um dialog abra a camara tenha de reiniciar
-            if (navController.currentDestination!!.route != ScanProf.route) {
+            if (navController.currentDestination!!.route != ScanAdmin.route) {
                 cameraExecutor.shutdown()
             }
         }
@@ -183,21 +226,14 @@ fun ScannerTeachScreen(navController: NavController, viewModel: ScannerViewModel
     //  Condição que verifica a permissão
     if (permission){
         AndroidView({ previewView }, modifier = Modifier.fillMaxSize())
-        //  Condição para mostrar Dialog de erro ou perguntar se quer adicionar avaria
-        when(show.value){
-            1 -> {
-                Malf_ErrorDialogs(onDialogDismissed = {
-                    show.value = 0
-                    navController.navigate(ScanProf.route)
-                }, navController, Err = false)
-            }
-            2 -> {
-                Malf_ErrorDialogs(onDialogDismissed = {
-                    show.value = 0
-                    navController.navigate(ScanProf.route)
-                }, navController, Err = true)
-            }
+        //  Condição para mostrar Dialog de erro
+        if (show.value) {
+            WarningDialog(
+                onDialogDismissed = { show.value = false },
+                title = stringResource(R.string.error),
+                text = stringResource(R.string.invalidDtext)
+            )
         }
     }
-}
 
+}

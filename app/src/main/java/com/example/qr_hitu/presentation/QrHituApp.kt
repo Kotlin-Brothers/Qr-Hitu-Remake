@@ -9,7 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.qr_hitu.presentation.viewModels.MalfunctionViewModel
-import com.example.qr_hitu.functions.ScaffoldLayouts
+import com.example.qr_hitu.ui.overlays.ScaffoldLayouts
 import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.example.qr_hitu.presentation.viewModels.ViewModel1
 import com.example.qr_hitu.presentation.viewModels.ViewModel2

@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 
-package com.example.qr_hitu.presentation
+package com.example.qr_hitu.presentation.profScreens.loading
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.RepeatMode

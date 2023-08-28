@@ -1,4 +1,4 @@
-package com.example.qr_hitu.presentation.adminScreens.scannerAdm
+package com.example.qr_hitu.presentation.adminScreens.scannerAdm.update
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

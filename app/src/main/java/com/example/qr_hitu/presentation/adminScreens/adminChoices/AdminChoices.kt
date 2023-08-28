@@ -1,4 +1,4 @@
-package com.example.qr_hitu.presentation.adminScreens
+package com.example.qr_hitu.presentation.adminScreens.adminChoices
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
