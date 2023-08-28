@@ -4,7 +4,7 @@ package com.example.qr_hitu
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.qr_hitu.screens.QrHituApp
+import com.example.qr_hitu.presentation.QrHituApp
 
 //  MainActivity da app
 class MainActivity : ComponentActivity() {
