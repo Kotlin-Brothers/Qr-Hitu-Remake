@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_PARAMETER")
-
 package com.example.qr_hitu.components
 
 
@@ -66,7 +64,7 @@ fun QrHituNavHost(
 
     //Inicio da UI
     //Coluna que contém o navegador ou NavHost
-    Column {
+    Column(modifier = modifier) {
 
         //NavHost é oq controla a navegação da app, nesta função contém todas as telas com a respetiva função para cada
         //É aqui que é ligado os objetos definidos na ficheiro HituDestination a cada ecrã

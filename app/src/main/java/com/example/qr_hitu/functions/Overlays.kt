@@ -6,7 +6,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.*
@@ -34,14 +33,12 @@ import java.util.Locale
 @Composable
 fun ScaffoldLayouts(navController: NavHostController, settingsManager: SettingsManager, viewModel1: ViewModel1, viewModel2: ViewModel2, viewModelSA : ScannerViewModel, viewModelMF : MalfunctionViewModel, switch: MutableState<String>){
 
-    //  state da Scaffold
-    val scaffoldState = rememberScaffoldState()
     // navegação
     val currentBackStack by navController.currentBackStackEntryAsState()
     val currentDestination = currentBackStack?.destination
     val destinationRoute = currentDestination?.route ?: Login.route
 
-    androidx.compose.material.Scaffold(
+    Scaffold(
         topBar = {
             //  Condição que verifica em que ecrã estamos e chama a topbar indicada
             when {
