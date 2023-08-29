@@ -20,10 +20,12 @@ import com.example.qr_hitu.presentation.viewModels.ViewModel1
 import com.example.qr_hitu.presentation.viewModels.ViewModel2
 import com.example.qr_hitu.components.*
 import com.example.qr_hitu.functions.SettingsManager
+import com.example.qr_hitu.presentation.adminScreens.scannerAdm.info.TopBarInfo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import java.util.Locale
+import java.util.Scanner
 
 //  Neste ficheiro está a Scaffold que engloba a aplicação toda e também a bottom bar e todas as topbars
 
@@ -48,19 +50,31 @@ fun ScaffoldLayouts(
     Scaffold(
         topBar = {
             //  Condição que verifica em que ecrã estamos e chama a topbar indicada
+
             when {
-                destinationRoute.contains(Create1.route) || destinationRoute.contains(ChooseQr.route) -> TopBarBackAdmin(navController = navController, settingsManager = settingsManager)
 
-                destinationRoute.contains(Create3.route) || destinationRoute.contains(TransferQr.route) -> TopBarExitAdmin(navController = navController)
+                destinationRoute.contains(ScannerAdminInfo.route) -> TopBarInfo(navController, viewModelSA, settingsManager)
 
-                destinationRoute.contains(SettingOptions.route) || destinationRoute.contains(Manual.route) || destinationRoute.contains(MalfInfo.route) || destinationRoute.contains(ForgotPass.route)
-                        || destinationRoute.contains(About.route) -> TopBarEmpty(navController = navController)
+                destinationRoute.contains(Create1.route) || destinationRoute.contains(ChooseQr.route) ->
+                    TopBarBackAdmin(navController = navController, settingsManager = settingsManager)
 
-                destinationRoute.contains(ScanAdmin.route) || destinationRoute.contains(AdminChoices.route) || destinationRoute.contains(TabScreen.route)
-                        || destinationRoute.contains(ScannerAdminInfoUpdate.route) -> TopBarUniAdmin(navController = navController, settingsManager)
+                destinationRoute.contains(Create3.route) || destinationRoute.contains(TransferQr.route) ->
+                    TopBarExitAdmin(navController = navController)
 
-                destinationRoute.contains(ScanProf.route) || destinationRoute.contains(MQRLocal.route) -> TopBarBackUser(navController = navController, settingsManager)
+                listOf(SettingOptions.route, Manual.route, MalfInfo.route, ForgotPass.route, About.route)
+                    .any { it in destinationRoute } ->
+                    TopBarEmpty(navController = navController)
+
+                listOf(ScanAdmin.route, AdminChoices.route, TabScreen.route, ScannerAdminInfoUpdate.route)
+                    .any { it in destinationRoute } ->
+                    TopBarUniAdmin(navController = navController, settingsManager)
+
+                listOf(ScanProf.route, MQRLocal.route)
+                    .any { it in destinationRoute } ->
+                    TopBarBackUser(navController = navController, settingsManager = settingsManager)
+
             }
+
         },
         bottomBar = {
             //  Condição para apenas chamar a bottombar quando necessário

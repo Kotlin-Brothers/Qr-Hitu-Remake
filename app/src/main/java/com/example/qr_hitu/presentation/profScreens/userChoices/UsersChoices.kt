@@ -2,6 +2,7 @@ package com.example.qr_hitu.presentation.profScreens.userChoices
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,71 +37,73 @@ fun PrimaryChoice(navController: NavController, settingsManager: SettingsManager
     Scaffold (
         topBar = { TopBarUC(navController = navController, settingsManager) }
     ) { innerPadding ->
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(innerPadding),
-            Arrangement.Center,
-            Alignment.CenterVertically
-        ) {
-            Button(
-                //  Envia para tela da camara
-                onClick = { navController.navigate(ScanProf.route) },
+        Box (modifier = Modifier.padding(innerPadding)) {
+            Row(
                 modifier = Modifier
-                    .size(150.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                ),
-                shape = MaterialTheme.shapes.medium
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(horizontal = 16.dp),
+                Arrangement.Center,
+                Alignment.CenterVertically
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Button(
+                    //  Envia para tela da camara
+                    onClick = { navController.navigate(ScanProf.route) },
+                    modifier = Modifier
+                        .size(150.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    ),
+                    shape = MaterialTheme.shapes.medium
                 ) {
-                    Icon(
-                        Icons.Filled.PhotoCamera,
-                        "Scan",
-                        modifier = Modifier
-                            .size(75.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                    Text(
-                        stringResource(R.string.scanner),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            Icons.Filled.PhotoCamera,
+                            "Scan",
+                            modifier = Modifier
+                                .size(75.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                        Text(
+                            stringResource(R.string.scanner),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
                 }
-            }
 
-            Spacer(modifier = Modifier.padding(10.dp))
+                Spacer(modifier = Modifier.padding(10.dp))
 
-            Button(
-                //  Envia para a tela de alerta de falta de QR Code
-                onClick = { navController.navigate(MQRLocal.route) },
-                modifier = Modifier
-                    .size(150.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                ),
-                shape = MaterialTheme.shapes.medium
-            ) {
-                Column (
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Button(
+                    //  Envia para a tela de alerta de falta de QR Code
+                    onClick = { navController.navigate(MQRLocal.route) },
+                    modifier = Modifier
+                        .size(150.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    ),
+                    shape = MaterialTheme.shapes.medium
                 ) {
-                    Icon(
-                        Icons.Filled.QrCode ,
-                        "Report",
-                        modifier = Modifier
-                            .size(75.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                    Text(
-                        stringResource(R.string.missingQR),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            Icons.Filled.QrCode,
+                            "Report",
+                            modifier = Modifier
+                                .size(75.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                        Text(
+                            stringResource(R.string.missingQR),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
                 }
             }
         }
