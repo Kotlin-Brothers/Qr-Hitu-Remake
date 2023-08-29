@@ -112,7 +112,7 @@ fun QrHituNavHost(
                 ScannerAdminScreen(navController, viewModelSA, settingsManager)
             }
             composable(ScannerAdminInfo.route) {
-                ScannerAdminInfo(navController, viewModelSA, settingsManager)
+                ScannerAdminInfo( viewModelSA )
             }
             composable(ScannerAdminInfoUpdate.route) {
                 ScannerAdminInfoUpdate(navController, viewModelSA)
