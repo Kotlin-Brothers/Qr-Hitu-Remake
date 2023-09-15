@@ -16,22 +16,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
 import com.example.qr_hitu.components.ScannerAdminInfoUpdate
 import com.example.qr_hitu.components.TabScreen
 import com.example.qr_hitu.functions.DelDialog
-import com.example.qr_hitu.ui.overlays.MenuOptions
+import com.example.qr_hitu.presentation.ui.overlays.MenuOptions
 import com.example.qr_hitu.functions.SettingsManager
 import com.example.qr_hitu.functions.delDispositivo
-import com.example.qr_hitu.ui.overlays.emailString
+import com.example.qr_hitu.presentation.ui.overlays.emailString
 import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarInfo(navController: NavController, viewModel: ScannerViewModel, settingsManager: SettingsManager){
+fun TopBarInfo(navController: NavController, settingsManager: SettingsManager){
     val email = emailString()
-
+    val viewModel: ScannerViewModel = hiltViewModel()
     val showState = remember { mutableStateOf(false) }
     val show by rememberUpdatedState(showState.value)
     val (block, room, machine) = viewModel.myData.value.toString().split(",")

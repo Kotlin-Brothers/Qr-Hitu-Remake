@@ -2,28 +2,26 @@ package com.example.qr_hitu.presentation.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.example.qr_hitu.data.MalfunctionRepository
+import com.example.qr_hitu.data.SelectedMalf
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 
 //  Ficheiro com o viewModel para as avarias
 
-//  Class de dados para mais facilmente aceder á informação
-data class SelectedMalf(
-    val name : String,
-    val room : String,
-    val block: String,
-    val urgent : Boolean
-)
+
 
 //  ViewModel
-class MalfunctionViewModel: ViewModel() {
-    //  Variáveis que guardam a informação
-    private val _myData = MutableLiveData<SelectedMalf>()
-    val myData: LiveData<SelectedMalf> = _myData
+@HiltViewModel
+class MalfunctionViewModel @Inject constructor(
+    private val selectedMalfRepository: MalfunctionRepository
+) : ViewModel() {
 
-    //  Procedimento que guarda a informação nas variáveis anteriores
+    val myData: LiveData<SelectedMalf> = selectedMalfRepository.myData
+
     fun setSelectedMal(name: String, room: String, block: String, urgent: Boolean) {
-        val data = SelectedMalf(name, room, block, urgent)
-        _myData.value = data
+        val selectedMalf = SelectedMalf(name, room, block, urgent)
+        selectedMalfRepository.setSelectedMal(selectedMalf)
     }
 }

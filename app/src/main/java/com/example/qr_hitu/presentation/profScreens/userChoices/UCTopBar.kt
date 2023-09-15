@@ -7,9 +7,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import com.example.qr_hitu.ui.overlays.MenuOptions
+import com.example.qr_hitu.presentation.ui.overlays.MenuOptions
 import com.example.qr_hitu.functions.SettingsManager
-import com.example.qr_hitu.ui.overlays.emailString
+import com.example.qr_hitu.presentation.ui.overlays.emailString
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
