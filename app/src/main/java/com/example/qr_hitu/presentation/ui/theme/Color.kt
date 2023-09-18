@@ -1,4 +1,4 @@
-package com.example.qr_hitu.ui.theme
+package com.example.qr_hitu.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

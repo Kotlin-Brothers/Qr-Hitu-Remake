@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
 import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
@@ -49,7 +50,8 @@ import kotlin.coroutines.suspendCoroutine
 @SuppressLint("MutableCollectionMutableState")
 @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
 @Composable
-fun ScannerAdminScreen(navController: NavController, viewModel: ScannerViewModel, settingsManager: SettingsManager) {
+fun ScannerAdminScreen(navController: NavController, viewModel: ScannerViewModel = hiltViewModel(), settingsManager: SettingsManager) {
+
 
     //  Lista dos QR Recentes
     val qrList = remember { mutableStateListOf<String>() }

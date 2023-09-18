@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -51,10 +52,6 @@ fun QrHituNavHost(
     navController: NavHostController = rememberNavController(),
     settingsManager: SettingsManager,
     startDestination: String = Login.route,
-    viewModel1: ViewModel1,
-    viewModel2: ViewModel2,
-    viewModelSA: ScannerViewModel,
-    viewModelMF: MalfunctionViewModel,
     switch: MutableState<String>,
     modifier: Modifier
 ) {
@@ -65,6 +62,11 @@ fun QrHituNavHost(
     //Inicio da UI
     //Coluna que contém o navegador ou NavHost
     Column(modifier = modifier) {
+
+        val viewModel1: ViewModel1 = hiltViewModel()
+        val viewModel2: ViewModel2 = hiltViewModel()
+        val viewModelSA: ScannerViewModel = hiltViewModel()
+        val viewModelMF: MalfunctionViewModel = hiltViewModel()
 
         //NavHost é oq controla a navegação da app, nesta função contém todas as telas com a respetiva função para cada
         //É aqui que é ligado os objetos definidos na ficheiro HituDestination a cada ecrã

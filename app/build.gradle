@@ -3,7 +3,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
-    id("io.gitlab.arturbosch.detekt") version("1.23.1")
+    id ("io.gitlab.arturbosch.detekt")
+    id ("com.google.dagger.hilt.android")
+    id ("kotlin-kapt")
 }
 
 android {
@@ -58,9 +60,17 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:1.5.0"
     debugImplementation "androidx.compose.ui:ui-test-manifest:1.5.0"
 
+
+    //Hilt
+    implementation(libs.hilt.work)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation libs.hilt.navigation.compose
+
     //Kotlin
     implementation(platform(libs.kotlin.bom))
     implementation(libs.core.ktx)
+    implementation 'androidx.work:work-runtime-ktx:2.8.1'
 
     //Compose
     implementation(platform(libs.compose.bom))

@@ -1,49 +1,41 @@
 package com.example.qr_hitu.presentation.viewModels
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.qr_hitu.data.CreateQr1
+import com.example.qr_hitu.data.CreateQr1Repository
+import com.example.qr_hitu.data.CreateQr2
+import com.example.qr_hitu.data.CreateQr2Repository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 
 //  Ficheiro com os viewModels para a criação de um QR Code
 
-//  Classes de dados para mais facilmente aceder á informação
-data class CreateQr1(
-    val block : String,
-    val room : String,
-    val machine : String
-)
-
-data class CreateQr2(
-    val name : String,
-    val processor : String,
-    val ram : String,
-    val powerSupply : String
-)
-
-
 //  ViewModel 1
-class ViewModel1 : ViewModel() {
-    //  Variáveis que guardam a informação
-    private val _myData = MutableLiveData<CreateQr1>()
-    val myData: LiveData<CreateQr1> = _myData
+@HiltViewModel
+class ViewModel1 @Inject constructor(
+    private val myRepository: CreateQr1Repository
+) : ViewModel() {
 
-    //  Procedimento que guarda a informação nas variáveis anteriores
+    val myData: LiveData<CreateQr1> = myRepository.myData
+
     fun setMyData1(block: String, room: String, machine: String) {
         val data = CreateQr1(block, room, machine)
-        _myData.value = data
+        myRepository.liveData(data)
     }
 }
 
 //  ViewModel 2
-class ViewModel2 : ViewModel() {
-    //  Variáveis que guardam a informação
-    private val _myData = MutableLiveData<CreateQr2>()
-    val myData: LiveData<CreateQr2> = _myData
+@HiltViewModel
+class ViewModel2 @Inject constructor(
+    private val createQrRepository: CreateQr2Repository
+) : ViewModel() {
 
-    //  Procedimento que guarda a informação nas variáveis anteriores
-    fun setMyData2(name : String, processor : String, ram : String, powerSupply: String) {
+    val myData: LiveData<CreateQr2> = createQrRepository.myData
+
+    fun setMyData2(name: String, processor: String, ram: String, powerSupply: String) {
         val data = CreateQr2(name, processor, ram, powerSupply)
-        _myData.value = data
+        createQrRepository.liveData(data)
     }
 }

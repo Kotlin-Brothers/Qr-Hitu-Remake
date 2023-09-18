@@ -1,4 +1,4 @@
-package com.example.qr_hitu.ui.overlays
+package com.example.qr_hitu.presentation.ui.overlays
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
@@ -35,10 +35,6 @@ import java.util.Scanner
 fun ScaffoldLayouts(
     navController: NavHostController,
     settingsManager: SettingsManager,
-    viewModel1: ViewModel1,
-    viewModel2: ViewModel2,
-    viewModelSA: ScannerViewModel,
-    viewModelMF: MalfunctionViewModel,
     switch: MutableState<String>
 ) {
 
@@ -53,7 +49,7 @@ fun ScaffoldLayouts(
 
             when {
 
-                destinationRoute.contains(ScannerAdminInfo.route) -> TopBarInfo(navController, viewModelSA, settingsManager)
+                destinationRoute.contains(ScannerAdminInfo.route) -> TopBarInfo(navController, settingsManager)
 
                 destinationRoute.contains(Create1.route) || destinationRoute.contains(ChooseQr.route) ->
                     TopBarBackAdmin(navController = navController, settingsManager = settingsManager)
@@ -89,10 +85,6 @@ fun ScaffoldLayouts(
         QrHituNavHost(
             navController = navController,
             settingsManager = settingsManager,
-            viewModel1 = viewModel1,
-            viewModel2 = viewModel2,
-            viewModelSA = viewModelSA,
-            viewModelMF = viewModelMF,
             switch = switch,
             modifier = Modifier.padding(innerPadding)
         )
