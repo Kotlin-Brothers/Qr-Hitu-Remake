@@ -3,6 +3,7 @@ package com.example.qr_hitu.presentation.adminScreens.tabLists.recentScanList
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.VideocamOff
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,89 +46,107 @@ fun RecentScanList(navController: NavController, settingsManager: SettingsManage
 
     //  Estado que guarda a lista
     val (list, setList) = remember { mutableStateOf<List<String>>(emptyList()) }
+    val (isLoading, setIsLoading) = remember { mutableStateOf(true) }
 
     //  Abre Coroutine
     LaunchedEffect(Unit) {
         setList(loadListFromSettings(settingsManager).reversed())   //  Vai buscar a lista ás settings e guarda no estado
+        setIsLoading(false)
     }
 
     //  Caso não exista itens a apresentar
-    if(list.isEmpty()){
+    if(list.isEmpty() && !isLoading){
         EmptyListScreen(text = stringResource(R.string.recentListText))
     } else {
-        LazyVerticalGrid(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(horizontal = 2.dp),
-            columns = GridCells.Fixed(1)
-        ) {
-            //  Para cada item na lista cria um Card com as informações necessárias
-            items(list) { item ->
-                //  Pega nos valores guardados numa string
-                val itemElements = item.split(",")
-                //  Verifica se está a retornar a quantidade certa de campos
-                if (itemElements.size >= 4) {
-                    //  Apenas é necessário os room, machine, date por isso o primeiro campo está marcado como _
-                    val (_, room, machine, date) = itemElements.take(4)
+        if(isLoading){
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ){
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary,
+                    strokeWidth = 5.dp
+                )
+            }
+        } else {
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .padding(horizontal = 2.dp),
+                columns = GridCells.Fixed(1)
+            ) {
+                //  Para cada item na lista cria um Card com as informações necessárias
+                items(list) { item ->
+                    //  Pega nos valores guardados numa string
+                    val itemElements = item.split(",")
+                    //  Verifica se está a retornar a quantidade certa de campos
+                    if (itemElements.size >= 4) {
+                        //  Apenas é necessário os room, machine, date por isso o primeiro campo está marcado como _
+                        val (_, room, machine, date) = itemElements.take(4)
 
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .clickable {
-                                //  Envia para a tela que mostra as especificações
-                                navController.navigate(ScannerAdminInfo.route)
-                                viewModel.setMyData(item)
-                            },
-                        shape = MaterialTheme.shapes.medium,
-                        elevation = CardDefaults.cardElevation(defaultElevation = 7.dp),
-                        colors = CardDefaults.cardColors(Color(0xFFd9d9d9))
-                    ) {
-                        Row(
+                        Card(
                             modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .clickable {
+                                    //  Envia para a tela que mostra as especificações
+                                    navController.navigate(ScannerAdminInfo.route)
+                                    viewModel.setMyData(item)
+                                },
+                            shape = MaterialTheme.shapes.medium,
+                            elevation = CardDefaults.cardElevation(defaultElevation = 7.dp),
+                            colors = CardDefaults.cardColors(Color(0xFFd9d9d9))
                         ) {
-                            //  Verifica qual icon deve ser usado
-                            if (machine == "Projetor") {
-                                Icon(Icons.Filled.VideocamOff, "Projector")
-                            } else {
-                                Icon(Icons.Filled.Computer, "Computer")
-                            }
-
-                            Column(
-                                modifier = Modifier,
-                                horizontalAlignment = Alignment.CenterHorizontally
+                            Row(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Row(
-                                    modifier = Modifier
-                                        .padding(start = 5.dp)
-                                        .width(270.dp),
-                                    horizontalArrangement = Arrangement.SpaceEvenly
+                                //  Verifica qual icon deve ser usado
+                                if (machine == "Projetor") {
+                                    Icon(Icons.Filled.VideocamOff, "Projector")
+                                } else {
+                                    Icon(Icons.Filled.Computer, "Computer")
+                                }
+
+                                Column(
+                                    modifier = Modifier,
+                                    horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
+                                    Row(
+                                        modifier = Modifier
+                                            .padding(start = 5.dp)
+                                            .width(270.dp),
+                                        horizontalArrangement = Arrangement.SpaceEvenly
+                                    ) {
+                                        Text(
+                                            text = machine,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            modifier = Modifier.padding(bottom = 8.dp),
+                                            color = MaterialTheme.colorScheme.onPrimary
+                                        )
+                                        Text(
+                                            text = room,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            modifier = Modifier.padding(bottom = 8.dp),
+                                            color = MaterialTheme.colorScheme.onPrimary
+                                        )
+                                    }
                                     Text(
-                                        text = machine,
+                                        text = "Visto a: $date",
                                         style = MaterialTheme.typography.bodyMedium,
-                                        modifier = Modifier.padding(bottom = 8.dp)
-                                    )
-                                    Text(
-                                        text = room,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        modifier = Modifier.padding(bottom = 8.dp)
+                                        modifier = Modifier.padding(bottom = 8.dp),
+                                        color = MaterialTheme.colorScheme.onPrimary
                                     )
                                 }
-                                Text(
-                                    text = "Visto a: $date",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    modifier = Modifier.padding(bottom = 8.dp)
-                                )
                             }
                         }
                     }
                 }
             }
         }
+
     }
 }

@@ -143,7 +143,7 @@ fun LoginScreen(
                     }),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                        focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        focusedLabelColor = MaterialTheme.colorScheme.primaryContainer,
                     )
                 )
 
@@ -176,7 +176,7 @@ fun LoginScreen(
                     },
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                        focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        focusedLabelColor = MaterialTheme.colorScheme.primaryContainer,
                     )
                 )
 
