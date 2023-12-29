@@ -22,7 +22,11 @@ fun TopBarInput(navController: NavController, settingsManager: SettingsManager) 
     val email = emailString()
 
     TopAppBar(
-        title = { Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer) },
+        title = {
+            if (email != null) {
+                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+        },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
         navigationIcon = {
             MenuOptions(navController = navController, settingsManager = settingsManager)

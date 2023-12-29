@@ -41,7 +41,11 @@ fun TopBarBackUser(navController: NavController, settingsManager: SettingsManage
     val email = emailString()
 
     TopAppBar(
-        title = { Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer) },
+        title = {
+            if (email != null) {
+                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+        },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
         navigationIcon = {
             MenuOptions(navController = navController, settingsManager = settingsManager)
@@ -64,7 +68,11 @@ fun TopBarBackAdmin(navController: NavController, settingsManager: SettingsManag
     val email = emailString()
 
     TopAppBar(
-        title = { Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer) },
+        title = {
+            if (email != null) {
+                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+        },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
         navigationIcon = {
             MenuOptions(navController = navController, settingsManager = settingsManager)
@@ -87,7 +95,11 @@ fun TopBarExitAdmin(navController: NavController) {
     val email = emailString()
 
     TopAppBar(
-        title = { Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer) },
+        title = {
+            if (email != null) {
+                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+        },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
         navigationIcon = {
             IconButton(onClick = { navController.navigate(TabScreen.route) }) {
@@ -108,7 +120,11 @@ fun TopBarUniAdmin(navController: NavController, settingsManager: SettingsManage
     val email = emailString()
 
     TopAppBar(
-        title = { Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer) },
+        title = {
+            if (email != null) {
+                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+        },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
         navigationIcon = {
             MenuOptions(navController = navController, settingsManager = settingsManager)

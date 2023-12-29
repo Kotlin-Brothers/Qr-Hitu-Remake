@@ -19,7 +19,11 @@ fun TopBarPhase2(navController: NavController){
     val email = emailString()
 
     TopAppBar(
-        title = { Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer) },
+        title = {
+            if (email != null) {
+                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            }
+        },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {

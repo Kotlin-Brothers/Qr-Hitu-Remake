@@ -198,9 +198,14 @@ fun MenuOptions(navController: NavController, settingsManager: SettingsManager) 
             },
             onClick = {
                 scope.launch {
-                    Firebase.auth.signOut()
-                    settingsManager.saveSetting("Admin", "User")
-                    navController.navigate(Login.route)
+                    try {
+                        Firebase.auth.signOut()
+                        settingsManager.saveSetting("Admin", "User")
+                        navController.navigate(Login.route)
+                    } catch (e: Exception) {
+                        // Handle the exception
+                        println(e.message)
+                    }
                 }
             },
             leadingIcon = {
@@ -212,13 +217,14 @@ fun MenuOptions(navController: NavController, settingsManager: SettingsManager) 
 
 
 //  Função para retirar o nome do utilizador apartir do email (isto contando que o email está no formato x.y@outlook.pt)
-fun emailString(): String {
-    //  Pega no email do utilizador separa e torna a primeira letra em maiúscula
-    val email = Firebase.auth.currentUser?.email!!.split(".")[0].split("@")[0].replaceFirstChar {
-        if (it.isLowerCase()) it.titlecase(
-            Locale.getDefault()
-        ) else it.toString()
+fun emailString(): String? {
+
+    val user = Firebase.auth.currentUser ?: return null
+    val email = user.email ?: return null
+
+    val formattedEmail = email.split(".")[0].split("@")[0].replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
     }
-    //  Retorna a string
-    return email
+
+    return formattedEmail
 }
