@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
+import com.example.qr_hitu.components.Loading
 import com.example.qr_hitu.components.TabScreen
 import com.example.qr_hitu.components.UserChoices
 import com.example.qr_hitu.data.Constants.ADMIN_COLLECTION
@@ -356,14 +357,10 @@ suspend fun performVerification(email: String?): DocumentSnapshot {
 }
 //  Verifica se o utilizador que está tentar fazer login é um admin ou não
 fun loginVerify(navController: NavController, email: String?, settingsManager: SettingsManager) {
-    //  Abre Coroutine
     CoroutineScope(Dispatchers.Main).launch {
-        //  Dá delay de 2 segundos
-        delay(1000)
-        // Chama a função performVerification
+        navController.navigate(Loading.route)
+        delay(2000)
         val result = performVerification(email)
-
-        // Verifica se existe correspondência
         if (result.exists()) {
             settingsManager.saveSetting("Admin", "Admin")
             navController.navigate(TabScreen.route)
@@ -372,6 +369,7 @@ fun loginVerify(navController: NavController, email: String?, settingsManager: S
         }
     }
 }
+
 
 
 //  Procedimento para verificar se existe aviso de falta de QR Code

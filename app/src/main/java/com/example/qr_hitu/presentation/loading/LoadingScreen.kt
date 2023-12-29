@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 
-package com.example.qr_hitu.presentation.profScreens.loading
+package com.example.qr_hitu.presentation.loading
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.RepeatMode
@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -43,9 +44,9 @@ import com.example.qr_hitu.functions.SettingsManager
 @Composable
 fun LoadingScreen(navController: NavController, settingsManager: SettingsManager, isDarkTheme: Boolean = isSystemInDarkTheme()){
 
-    //  Estado com o progresso da animação
+    // State with the progress of the animation
     val animationProgress = remember { Animatable(-0.5f) }
-    //  Verificações do tema para definir qual imagem usar no loading
+    // Checks for the theme to define which image to use in loading
     val switch = remember { mutableStateOf("") }
     val theme by rememberUpdatedState(
         if (switch.value == "") {
@@ -60,9 +61,9 @@ fun LoadingScreen(navController: NavController, settingsManager: SettingsManager
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //  Abre Coroutine
+        // Opens Coroutine
         LaunchedEffect(Unit) {
-            //  A animação funciona apenas enquanto estiver na tela
+            // The animation only works while on the screen
             while (true) {
                 animationProgress.animateTo(
                     targetValue = 0.5f,
@@ -75,48 +76,10 @@ fun LoadingScreen(navController: NavController, settingsManager: SettingsManager
             }
         }
 
-        Box(
-            contentAlignment = Alignment.Center
-        ) {
-            //  Condição do tema
-            when (theme) {
-                "Light" -> Image(
-                    painter = painterResource(R.drawable.qr_loading_light),
-                    contentDescription = "QR Code",
-                    modifier = Modifier.size(200.dp)
-                )
-                "Dark" -> Image(
-                    painter = painterResource(R.drawable.qr_loading_dark),
-                    contentDescription = "QR Code",
-                    modifier = Modifier.size(200.dp)
-                )
-                else -> if (isDarkTheme) Image(
-                    painter = painterResource(R.drawable.qr_loading_dark),
-                    contentDescription = "QR Code",
-                    modifier = Modifier.size(200.dp)
-                ) else Image(
-                    painter = painterResource(R.drawable.qr_loading_light),
-                    contentDescription = "QR Code",
-                    modifier = Modifier.size(200.dp)
-                )
-            }
-
-            //  Variáveis com o aspeto da animação
-            val qrImageHeightPx = with(LocalDensity.current) { 80.dp.roundToPx() }
-            val barColor = MaterialTheme.colorScheme.primary
-            val barHeight = 5.dp
-            val barWidth = 250.dp
-
-            //  Linha animada
-            Box(
-                modifier = Modifier
-                    .width(barWidth)
-                    .height(barHeight)
-                    .offset(y = (animationProgress.value * qrImageHeightPx).dp)
-                    .background(barColor, CircleShape)
-            )
-
-        }
+        CircularProgressIndicator(
+            color = MaterialTheme.colorScheme.primary,
+            strokeWidth = 5.dp
+        )
 
         Spacer(modifier = Modifier.padding(20.dp))
 

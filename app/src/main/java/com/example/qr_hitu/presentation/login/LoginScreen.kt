@@ -208,19 +208,12 @@ fun LoginScreen(
 
                 Button(
                     onClick = {
-                        //  Dá log in no utilizador
                         Firebase.auth.signInWithEmailAndPassword(emailValue, passwordValue)
                             .addOnCompleteListener { task ->
-                                //  Caso esteja tudo certo passa para a verificação se é admin ou não
                                 if (task.isSuccessful) {
                                     val email = Firebase.auth.currentUser?.email
-
-                                    //  Envia o utilizador para a tela de Loading
-                                    navController.navigate(Loading.route)
                                     loginVerify(navController, email, settingsManager)
-
                                 } else {
-                                    //  Caso dê erro mostra SnackBar de erro
                                     showError = true
                                     showSnack.value = true
                                 }

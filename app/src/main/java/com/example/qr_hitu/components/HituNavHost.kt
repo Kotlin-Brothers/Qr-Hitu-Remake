@@ -19,7 +19,7 @@ import com.example.qr_hitu.functions.ConnectionState
 import com.example.qr_hitu.functions.SettingsManager
 import com.example.qr_hitu.functions.WifiWarn
 import com.example.qr_hitu.functions.connectivityState
-import com.example.qr_hitu.presentation.profScreens.loading.LoadingScreen
+import com.example.qr_hitu.presentation.loading.LoadingScreen
 import com.example.qr_hitu.presentation.adminScreens.adminChoices.AdminChoices
 import com.example.qr_hitu.presentation.adminScreens.create.phasefinal.QrCreateFinal
 import com.example.qr_hitu.presentation.adminScreens.create.phase1.QrCreatePhase1
