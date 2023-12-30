@@ -25,10 +25,10 @@ import com.example.qr_hitu.functions.DelDialog
 import com.example.qr_hitu.presentation.ui.overlays.MenuOptions
 import com.example.qr_hitu.functions.SettingsManager
 import com.example.qr_hitu.functions.delDispositivo
+import com.example.qr_hitu.presentation.ui.overlays.MainTopBar
 import com.example.qr_hitu.presentation.ui.overlays.emailString
 import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarInfo(navController: NavController, settingsManager: SettingsManager){
     val email = emailString()
@@ -37,13 +37,8 @@ fun TopBarInfo(navController: NavController, settingsManager: SettingsManager){
     val show by rememberUpdatedState(showState.value)
     val (block, room, machine) = viewModel.myData.value.toString().split(",")
 
-    TopAppBar(
-        title = {
-            if (email != null) {
-                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
+    MainTopBar(
+        title = { email ?: "" },
         navigationIcon = {
             MenuOptions(navController = navController, settingsManager = settingsManager)
         },

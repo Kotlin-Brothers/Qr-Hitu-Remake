@@ -34,80 +34,74 @@ import com.example.qr_hitu.functions.SettingsManager
 @Composable
 fun PrimaryChoice(navController: NavController, settingsManager: SettingsManager) {
 
-    Scaffold (
-        topBar = { TopBarUC(navController = navController, settingsManager) }
-    ) { innerPadding ->
-        Box (modifier = Modifier.padding(innerPadding)) {
-            Row(
+    Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(horizontal = 16.dp),
+            Arrangement.Center,
+            Alignment.CenterVertically
+        ) {
+            Button(
+                //  Envia para tela da camara
+                onClick = { navController.navigate(ScanProf.route) },
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background)
-                    .padding(horizontal = 16.dp),
-                Arrangement.Center,
-                Alignment.CenterVertically
+                    .size(150.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
+                shape = MaterialTheme.shapes.medium
             ) {
-                Button(
-                    //  Envia para tela da camara
-                    onClick = { navController.navigate(ScanProf.route) },
-                    modifier = Modifier
-                        .size(150.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    ),
-                    shape = MaterialTheme.shapes.medium
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            Icons.Filled.PhotoCamera,
-                            "Scan",
-                            modifier = Modifier
-                                .size(75.dp),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                        Text(
-                            stringResource(R.string.scanner),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
+                    Icon(
+                        Icons.Filled.PhotoCamera,
+                        "Scan",
+                        modifier = Modifier
+                            .size(75.dp),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    Text(
+                        stringResource(R.string.scanner),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
                 }
+            }
 
-                Spacer(modifier = Modifier.padding(10.dp))
+            Spacer(modifier = Modifier.padding(10.dp))
 
-                Button(
-                    //  Envia para a tela de alerta de falta de QR Code
-                    onClick = { navController.navigate(MQRLocal.route) },
-                    modifier = Modifier
-                        .size(150.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    ),
-                    shape = MaterialTheme.shapes.medium
+            Button(
+                //  Envia para a tela de alerta de falta de QR Code
+                onClick = { navController.navigate(MQRLocal.route) },
+                modifier = Modifier
+                    .size(150.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
+                shape = MaterialTheme.shapes.medium
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            Icons.Filled.QrCode,
-                            "Report",
-                            modifier = Modifier
-                                .size(75.dp),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                        Text(
-                            stringResource(R.string.missingQR),
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
+                    Icon(
+                        Icons.Filled.QrCode,
+                        "Report",
+                        modifier = Modifier
+                            .size(75.dp),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                    Text(
+                        stringResource(R.string.missingQR),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
                 }
             }
         }
-
     }
-
 }

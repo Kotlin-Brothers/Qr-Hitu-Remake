@@ -14,20 +14,16 @@ import androidx.navigation.NavController
 import com.example.qr_hitu.components.UserChoices
 import com.example.qr_hitu.presentation.ui.overlays.MenuOptions
 import com.example.qr_hitu.functions.SettingsManager
+import com.example.qr_hitu.presentation.ui.overlays.MainTopBar
 import com.example.qr_hitu.presentation.ui.overlays.emailString
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun TopBarInput(navController: NavController, settingsManager: SettingsManager) {
     val email = emailString()
 
-    TopAppBar(
-        title = {
-            if (email != null) {
-                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
+    MainTopBar(
+        title = { email ?: "" },
         navigationIcon = {
             MenuOptions(navController = navController, settingsManager = settingsManager)
         },

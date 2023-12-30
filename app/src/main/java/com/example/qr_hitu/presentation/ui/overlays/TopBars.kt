@@ -7,22 +7,17 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.example.qr_hitu.components.TabScreen
 import com.example.qr_hitu.functions.SettingsManager
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun TopBarEmpty(navController: NavController) {
-
-    TopAppBar(
-        title = { Text(text = "", color = MaterialTheme.colorScheme.onPrimaryContainer) },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
-        actions = {
+    MainTopBar(
+        title = { "" },
+        navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     Icons.Filled.ArrowBack,
@@ -30,9 +25,9 @@ fun TopBarEmpty(navController: NavController) {
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
-        }
+        },
+        actions = {}
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,13 +35,8 @@ fun TopBarEmpty(navController: NavController) {
 fun TopBarBackUser(navController: NavController, settingsManager: SettingsManager) {
     val email = emailString()
 
-    TopAppBar(
-        title = {
-            if (email != null) {
-                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
+    MainTopBar(
+        title = { email ?: "" },
         navigationIcon = {
             MenuOptions(navController = navController, settingsManager = settingsManager)
         },
@@ -67,13 +57,8 @@ fun TopBarBackUser(navController: NavController, settingsManager: SettingsManage
 fun TopBarBackAdmin(navController: NavController, settingsManager: SettingsManager) {
     val email = emailString()
 
-    TopAppBar(
-        title = {
-            if (email != null) {
-                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
+    MainTopBar(
+        title = { email ?: "" },
         navigationIcon = {
             MenuOptions(navController = navController, settingsManager = settingsManager)
         },
@@ -89,18 +74,12 @@ fun TopBarBackAdmin(navController: NavController, settingsManager: SettingsManag
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarExitAdmin(navController: NavController) {
     val email = emailString()
 
-    TopAppBar(
-        title = {
-            if (email != null) {
-                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
+    MainTopBar(
+        title = { email ?: "" },
         actions = {
             IconButton(onClick = { navController.navigate(TabScreen.route) }) {
                 Icon(
@@ -125,18 +104,14 @@ fun TopBarExitAdmin(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarUniAdmin(navController: NavController, settingsManager: SettingsManager) {
+fun TopBarUni(navController: NavController, settingsManager: SettingsManager) {
     val email = emailString()
 
-    TopAppBar(
-        title = {
-            if (email != null) {
-                Text(text = email, color = MaterialTheme.colorScheme.onPrimaryContainer)
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
+    MainTopBar(
+        title = { email ?: "" },
         navigationIcon = {
             MenuOptions(navController = navController, settingsManager = settingsManager)
-        }
+        },
+        actions = {}
     )
 }

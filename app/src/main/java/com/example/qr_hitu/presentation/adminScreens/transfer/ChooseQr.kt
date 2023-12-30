@@ -146,7 +146,6 @@ fun ChooseQr(navController: NavController, viewModel: ViewModel1) {
                     )
                 }
             }
-
         }
 
         Spacer(modifier = Modifier.padding(10.dp))

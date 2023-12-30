@@ -14,10 +14,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.qr_hitu.R
-import com.example.qr_hitu.presentation.viewModels.MalfunctionViewModel
-import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
-import com.example.qr_hitu.presentation.viewModels.ViewModel1
-import com.example.qr_hitu.presentation.viewModels.ViewModel2
 import com.example.qr_hitu.components.*
 import com.example.qr_hitu.functions.SettingsManager
 import com.example.qr_hitu.presentation.adminScreens.scannerAdm.info.TopBarInfo
@@ -25,7 +21,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import java.util.Locale
-import java.util.Scanner
 
 //  Neste ficheiro está a Scaffold que engloba a aplicação toda e também a bottom bar e todas as topbars
 
@@ -61,11 +56,11 @@ fun ScaffoldLayouts(
                     .any { it in destinationRoute } ->
                     TopBarEmpty(navController = navController)
 
-                listOf(ScanAdmin.route, AdminChoices.route, TabScreen.route, ScannerAdminInfoUpdate.route)
+                listOf(ScanAdmin.route, AdminChoices.route, TabScreen.route, ScannerAdminInfoUpdate.route, UserChoices.route)
                     .any { it in destinationRoute } ->
-                    TopBarUniAdmin(navController = navController, settingsManager)
+                    TopBarUni(navController = navController, settingsManager)
 
-                listOf(ScanProf.route, MQRLocal.route)
+                listOf(ScanProf.route, MQRLocal.route, Create2.route)
                     .any { it in destinationRoute } ->
                     TopBarBackUser(navController = navController, settingsManager = settingsManager)
 
