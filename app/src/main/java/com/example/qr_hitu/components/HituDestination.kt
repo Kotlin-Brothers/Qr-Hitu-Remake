@@ -104,3 +104,7 @@ object About: HituDestination {
 object WifiWarn: HituDestination {
     override val route = "wifiWarn"
 }
+
+object Feedback: HituDestination {
+    override val route = "feedback"
+}

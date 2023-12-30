@@ -8,5 +8,6 @@ object Constants {
     const val DONE_MALF_COLLECTION = "Avarias Completas"
     const val ADMIN_COLLECTION = "Admin"
     const val DEFAULT_COLLECTION = "Padrões"
+    const val FEEDBACK_COLLECTION = "Feedback"
 
 }

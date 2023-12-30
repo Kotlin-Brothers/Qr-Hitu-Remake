@@ -52,7 +52,7 @@ fun ScaffoldLayouts(
                 destinationRoute.contains(Create3.route) || destinationRoute.contains(TransferQr.route) ->
                     TopBarExitAdmin(navController = navController)
 
-                listOf(SettingOptions.route, Manual.route, MalfInfo.route, ForgotPass.route, About.route)
+                listOf(SettingOptions.route, Manual.route, MalfInfo.route, ForgotPass.route, About.route, Feedback.route)
                     .any { it in destinationRoute } ->
                     TopBarEmpty(navController = navController)
 
@@ -186,6 +186,18 @@ fun MenuOptions(navController: NavController, settingsManager: SettingsManager) 
         )
         DropdownMenuItem(
             text = {
+                   Text(
+                       text = stringResource(R.string.feedback),
+                       color = MaterialTheme.colorScheme.onPrimaryContainer
+                   )
+            },
+            onClick = { navController.navigate(Feedback.route) },
+            leadingIcon = {
+                Icon(Icons.Filled.Feedback, "Feedback")
+            }
+        )
+        DropdownMenuItem(
+            text = {
                 Text(
                     text = stringResource(R.string.logout),
                     color = MaterialTheme.colorScheme.onPrimaryContainer
@@ -193,14 +205,9 @@ fun MenuOptions(navController: NavController, settingsManager: SettingsManager) 
             },
             onClick = {
                 scope.launch {
-                    try {
-                        Firebase.auth.signOut()
-                        settingsManager.saveSetting("Admin", "User")
-                        navController.navigate(Login.route)
-                    } catch (e: Exception) {
-                        // Handle the exception
-                        println(e.message)
-                    }
+                    Firebase.auth.signOut()
+                    settingsManager.saveSetting("Admin", "User")
+                    navController.navigate(Login.route)
                 }
             },
             leadingIcon = {

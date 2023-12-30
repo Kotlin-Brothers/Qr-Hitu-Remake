@@ -28,6 +28,7 @@
         //Menu
             <string name="settings">Definições</string>
             <string name="manual">Manual</string>
+            <string name="feedback">Feedback</string>
             <string name="logout">Sair de Sessão</string>
 
     //Login
@@ -196,4 +197,7 @@
         Desenvolvemos este projeto no ambito da PAP ou Projeto de Aptidão Profissional com o objetivo de criar um meio de melhorar controlo das avarias que acontecem na escola de maneira facil e prática.</string>
     //WifiWarn
         <string name="noWifi">Sem Internet!</string>
+    //Feedback
+        <string name="feedbackMessage">Escreva o seu feedback sobre a nossa aplicação para que possamos melhorar.</string>
+        <string name="feedbackAlt">Mais informações</string>
 </resources>

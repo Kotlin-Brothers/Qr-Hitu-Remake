@@ -28,6 +28,7 @@
         //Menu
             <string name="settings">Settings</string>
             <string name="manual">Manual</string>
+            <string name="feedback">Feedback</string>
             <string name="logout">Log out</string>
 
     //Login
@@ -199,4 +200,7 @@
         We developed this project within the scope of the PAP or Professional Aptitude Project with the aim of creating a means of improving control of the malfunctions that occur in the school in an easy and practical way.</string>
     //WifiWarn
         <string name="noWifi">No Internet Connection!</string>
+    //Feedback
+        <string name="feedbackMessage">Write your feedback about our application so that we can improve.</string>
+        <string name="feedbackAlt">More information</string>
 </resources>

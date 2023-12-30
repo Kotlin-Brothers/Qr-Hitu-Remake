@@ -37,6 +37,7 @@ import com.example.qr_hitu.presentation.adminScreens.transfer.TransferQr
 import com.example.qr_hitu.presentation.login.ForgotPass
 import com.example.qr_hitu.presentation.login.LoginScreen
 import com.example.qr_hitu.presentation.menu.About
+import com.example.qr_hitu.presentation.menu.Feedback
 import com.example.qr_hitu.presentation.menu.Manual
 import com.example.qr_hitu.presentation.menu.SettingsOptions
 import com.example.qr_hitu.presentation.profScreens.missingQr.MQRLocal
@@ -151,6 +152,9 @@ fun QrHituNavHost(
             }
             composable(WifiWarn.route) {
                 WifiWarn(navController)
+            }
+            composable(Feedback.route){
+                Feedback(navController)
             }
         }
     }
