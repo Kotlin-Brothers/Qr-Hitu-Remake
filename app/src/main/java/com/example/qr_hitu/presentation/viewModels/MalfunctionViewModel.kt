@@ -20,8 +20,8 @@ class MalfunctionViewModel @Inject constructor(
 
     val myData: LiveData<SelectedMalf> = selectedMalfRepository.myData
 
-    fun setSelectedMal(name: String, room: String, block: String, urgent: Boolean) {
-        val selectedMalf = SelectedMalf(name, room, block, urgent)
+    fun setSelectedMal(name: String, room: String, block: String, urgent: Boolean, dateAdd: String) {
+        val selectedMalf = SelectedMalf(name, room, block, urgent, dateAdd)
         selectedMalfRepository.setSelectedMal(selectedMalf)
     }
 }

@@ -26,6 +26,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 //Neste ficheiro estão as funções relacionadas com a comunicação com a base de dados, como por exemplo colocar algo novo na base de dados ou remover algo
 
@@ -132,7 +134,8 @@ fun addMalfunction(
     machine: String,
     malfunction: String,    //  As variáveis malfunction, urgent e email têm as informações sobra a avaria, se é urgente e quem a alertou
     urgent: Boolean,
-    email: String
+    email: String,
+    dateAdd: String
 ) {
     //  Cria um map com as informações
     val data = hashMapOf(
@@ -141,7 +144,8 @@ fun addMalfunction(
         "Dispositivo" to machine,
         "Avaria" to malfunction,
         "Urgente" to urgent,
-        "Email" to email
+        "Email" to email,
+        "Data Adicionado" to dateAdd
     )
 
 
@@ -202,10 +206,14 @@ fun completeMalfunction(
     machine: String,
     malfunction: String,    //  As variáveis malfunction, urgent e email têm as informações sobra a avaria, se é urgente e quem a alertou
     urgent: Boolean,
-    email: String
+    email: String,
+    dateAdd: String
 ) {
     //  Variável que consegue a data e hora local
-    val dateTime = LocalDateTime.now()
+    val dateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    val formattedDateTime = dateTime.format(formatter);
+
     //  Variável que cria um map das informações
     val data = hashMapOf(
         "Bloco" to block,
@@ -214,7 +222,8 @@ fun completeMalfunction(
         "Avaria" to malfunction,
         "Urgente" to urgent,
         "Email" to email,
-        "Date Time" to dateTime.toString()
+        "Data Adicionado" to dateAdd,
+        "Data de conclusão" to formattedDateTime.toString()
     )
 
 
@@ -257,6 +266,7 @@ data class MalfunctionDocs(
     val room: String,
     val block: String,
     val urgent: Boolean,
+    val dateAdd: String
 )
 //  Procedimento para ir buscar todos os alertas de avaria á firestore
 fun fetchMalfList(setList: (List<MalfunctionDocs>) -> Unit) {
@@ -271,10 +281,11 @@ fun fetchMalfList(setList: (List<MalfunctionDocs>) -> Unit) {
                 val room = document.getString("Sala")
                 val block = document.getString("Bloco")
                 val urgent = document.getBoolean("Urgente")
+                val dateAdd = document.getString("Data Adicionada")
 
                 //  Verifica se todos os campos necessários estão preenchidos
-                if (machine != null && room != null && block != null && urgent != null) {
-                    MalfunctionDocs(machine, room, block, urgent)
+                if (machine != null && room != null && block != null && urgent != null && dateAdd != null) {
+                    MalfunctionDocs(machine, room, block, urgent, dateAdd)
                 } else {
                     null
                 }

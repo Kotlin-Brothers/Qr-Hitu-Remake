@@ -51,6 +51,7 @@ fun MalfInfo(navController: NavController, viewModel: MalfunctionViewModel) {
     val urgent = viewModel.myData.value!!.urgent
     val machine = viewModel.myData.value!!.name
     val block = viewModel.myData.value!!.block
+    val dateAdd = viewModel.myData.value!!.dateAdd
 
     //  Variáveis com as informações do computador, avaria e quem alertou a avaria
     val malf = seeMalfunction(machine, room)
@@ -219,7 +220,8 @@ fun MalfInfo(navController: NavController, viewModel: MalfunctionViewModel) {
                         machine,
                         malfDesc as String,
                         urgent,
-                        senderMail as String
+                        senderMail as String,
+                        dateAdd
                     )
                     navController.popBackStack()
                 }

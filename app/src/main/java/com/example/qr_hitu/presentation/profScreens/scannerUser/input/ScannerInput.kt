@@ -33,6 +33,9 @@ import com.example.qr_hitu.functions.getOptions
 import com.example.qr_hitu.functions.malfunctionExists
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 
 //  Tela para escolher qual avaria o dispositivo tem
@@ -40,6 +43,9 @@ import com.google.firebase.ktx.Firebase
 @Composable
 fun ScannerInput(navController: NavController, viewModel: ScannerViewModel, settingsManager: SettingsManager) {
 
+    val dateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    val formattedDateTime = dateTime.format(formatter);
     //  Variável que controla se tem de enviar email
     val sendE = remember { mutableStateOf(false) }
     //  Email do utilizador
@@ -219,7 +225,8 @@ fun ScannerInput(navController: NavController, viewModel: ScannerViewModel, sett
                                                     machine,
                                                     outro,
                                                     urgentState,
-                                                    email
+                                                    email,
+                                                    formattedDateTime.toString()
                                                 )
                                             }
                                         }
@@ -234,7 +241,8 @@ fun ScannerInput(navController: NavController, viewModel: ScannerViewModel, sett
                                             machine,
                                             malfunction,
                                             urgentState,
-                                            email
+                                            email,
+                                            formattedDateTime.toString()
                                         )
                                     }
                                 }

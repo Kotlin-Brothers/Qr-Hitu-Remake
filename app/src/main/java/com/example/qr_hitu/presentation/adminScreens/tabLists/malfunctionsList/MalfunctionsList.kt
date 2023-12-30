@@ -85,7 +85,7 @@ fun MalfList(navController: NavController, viewModel: MalfunctionViewModel) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .clickable { navController.navigate(MalfInfo.route); viewModel.setSelectedMal(item.machine, item.room, item.block, item.urgent) },
+                            .clickable { navController.navigate(MalfInfo.route); viewModel.setSelectedMal(item.machine, item.room, item.block, item.urgent, item.dateAdd) },
                         shape = MaterialTheme.shapes.medium,
                         elevation = CardDefaults.cardElevation(defaultElevation = 7.dp),
                         colors = CardDefaults.cardColors(Color(0xFFd9d9d9))

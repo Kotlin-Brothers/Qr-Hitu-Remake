@@ -5,7 +5,8 @@ data class SelectedMalf(
     val name : String,
     val room : String,
     val block: String,
-    val urgent : Boolean
+    val urgent : Boolean,
+    val dateAdd : String
 )
 
 //  Classes de dados para mais facilmente aceder á informação
