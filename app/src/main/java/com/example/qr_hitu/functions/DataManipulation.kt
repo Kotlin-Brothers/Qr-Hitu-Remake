@@ -213,13 +213,16 @@ fun completeMalfunction(
         "Dispositivo" to machine,
         "Avaria" to malfunction,
         "Urgente" to urgent,
-        "Email" to email
+        "Email" to email,
+        "Date Time" to dateTime.toString()
     )
+
+
 
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .set() define a informação do documento atual
     db.collection(DONE_MALF_COLLECTION)
-        .document("$room $machine $dateTime")
+        .document()
         .set(data)
 
     //  .collection() identifica a coleção, .document() identifica o documento
