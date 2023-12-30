@@ -90,9 +90,11 @@ fun QrCreateFinal(navController: NavController, viewModel1: ViewModel1, viewMode
             Spacer(modifier = Modifier.padding(60.dp))
 
             //  Verifica se a data está vazia antes de adicionar á base de dados
-            if (myData != null) {
-                content = encryptAES("${myData.block},${myData.room},${myData.machine}", encryptionKey)
-                addDispositivo(myData.block, myData.room, myData.machine, spec)
+            LaunchedEffect(myData){
+                if (myData != null) {
+                    content = encryptAES("${myData.block},${myData.room},${myData.machine}", encryptionKey)
+                    addDispositivo(myData.block, myData.room, myData.machine, spec)
+                }
             }
 
             //  Cria o bitmap

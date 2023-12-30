@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -24,10 +25,10 @@ import com.example.qr_hitu.presentation.viewModels.ViewModel2
 fun QrCreatePhase2(navController: NavController, viewModel: ViewModel2) {
 
     //  especificações
-    var name by remember { mutableStateOf("") }
-    var processor by remember { mutableStateOf("") }
-    var ram by remember { mutableStateOf("") }
-    var powerSupply by remember { mutableStateOf("") }
+    var name by rememberSaveable { mutableStateOf("") }
+    var processor by rememberSaveable { mutableStateOf("") }
+    var ram by rememberSaveable { mutableStateOf("") }
+    var powerSupply by rememberSaveable { mutableStateOf("") }
 
     val focusManager = LocalFocusManager.current
     //  Ativa botão se todos os campos estiverem preenchidos

@@ -82,10 +82,13 @@ fun TransferQr(navController: NavController, viewModel: ViewModel1) {
             Spacer(modifier = Modifier.padding(60.dp))
 
             //  Verifica se os dados não vieram vazios
-            if (myData != null) {
-                //  Encripta o conteúdo
-                content = encryptAES("${myData.block},${myData.room},${myData.machine}", encryptionKey)
+            LaunchedEffect(myData){
+                if (myData != null) {
+                    //  Encripta o conteúdo
+                    content = encryptAES("${myData.block},${myData.room},${myData.machine}", encryptionKey)
+                }
             }
+
 
             val text = createQR(content = content)
             Image(bitmap = text, contentDescription = "qr", Modifier.size(200.dp))

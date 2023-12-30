@@ -101,11 +101,20 @@ fun TopBarExitAdmin(navController: NavController) {
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.primaryContainer),
-        navigationIcon = {
+        actions = {
             IconButton(onClick = { navController.navigate(TabScreen.route) }) {
                 Icon(
                     Icons.Filled.Close,
                     "Close",
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            }
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    "Back",
                     tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
