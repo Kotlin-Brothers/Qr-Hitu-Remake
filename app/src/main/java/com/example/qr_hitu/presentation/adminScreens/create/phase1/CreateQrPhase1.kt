@@ -8,10 +8,12 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
@@ -35,25 +37,25 @@ fun QrCreatePhase1(navController: NavController, viewModel: ViewModel1) {
     var textFiledSize by remember { mutableStateOf(Size.Zero) }
 
     //  Se dropbox está expandida ou não
-    var expanded3 by remember { mutableStateOf(false) }
-    var expanded2 by remember { mutableStateOf(false) }
-    var expanded by remember { mutableStateOf(false) }
+    var expanded3 by rememberSaveable { mutableStateOf(false) }
+    var expanded2 by rememberSaveable { mutableStateOf(false) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
 
     //  Se o componente referido está ativo
-    var enabled3 by remember { mutableStateOf(false) }
-    var enabled2 by remember { mutableStateOf(false) }
-    var enabled by remember { mutableStateOf(false) }
+    var enabled3 by rememberSaveable { mutableStateOf(false) }
+    var enabled2 by rememberSaveable { mutableStateOf(false) }
+    var enabled by rememberSaveable { mutableStateOf(false) }
 
     //  Lista com os blocos, salas e máquinas
     val blocks = listOf(/*"Bloco A", "Bloco B", "Bloco C", "Bloco D", */"Bloco E")
-    var rooms by remember { mutableStateOf(listOf<String>()) }
+    var rooms by rememberSaveable { mutableStateOf(listOf<String>()) }
     val machines =
         listOf("Computador 1", "Computador 2", "Computador 3", "Computador 4", "Computador 5")
 
     //  Bloco/Sala/Máquina selecionada
-    var selectedBlock by remember { mutableStateOf("") }
-    var selectedRoom by remember { mutableStateOf("") }
-    var selectedMachine by remember { mutableStateOf("") }
+    var selectedBlock by rememberSaveable { mutableStateOf("") }
+    var selectedRoom by rememberSaveable { mutableStateOf("") }
+    var selectedMachine by rememberSaveable { mutableStateOf("") }
 
     //  Ativa componente seguinte caso o anterior já esteja preenchido
     enabled = selectedBlock.isNotEmpty()
@@ -99,25 +101,27 @@ fun QrCreatePhase1(navController: NavController, viewModel: ViewModel1) {
                 expanded = !expanded
             }
         ) {
-            OutlinedTextField(
-                value = selectedBlock,
-                readOnly = true,
-                onValueChange = { selectedBlock = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor()
-                    .onGloballyPositioned { coordinates ->
-                        textFiledSize = coordinates.size.toSize()
+            CompositionLocalProvider(LocalTextInputService provides null) {
+                OutlinedTextField(
+                    value = selectedBlock,
+                    readOnly = true,
+                    onValueChange = { selectedBlock = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor()
+                        .onGloballyPositioned { coordinates ->
+                            textFiledSize = coordinates.size.toSize()
+                        },
+                    label = { Text(text = stringResource(R.string.createBlock)) },
+                    trailingIcon = {
+                        Icon(icon, "", Modifier.clickable { expanded = !expanded })
                     },
-                label = { Text(text = stringResource(R.string.createBlock)) },
-                trailingIcon = {
-                    Icon(icon, "", Modifier.clickable { expanded = !expanded })
-                },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                    focusedLabelColor = MaterialTheme.colorScheme.primaryContainer,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                        focusedLabelColor = MaterialTheme.colorScheme.primaryContainer,
+                    )
                 )
-            )
+            }
             ExposedDropdownMenu(
                 expanded = expanded,
                 onDismissRequest = {
@@ -152,26 +156,28 @@ fun QrCreatePhase1(navController: NavController, viewModel: ViewModel1) {
                 expanded2 = !expanded2
             }
         ) {
-            OutlinedTextField(
-                value = selectedRoom,
-                readOnly = true,
-                enabled = enabled,
-                onValueChange = { selectedRoom = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor()
-                    .onGloballyPositioned { coordinates ->
-                        textFiledSize = coordinates.size.toSize()
+            CompositionLocalProvider(LocalTextInputService provides null) {
+                OutlinedTextField(
+                    value = selectedRoom,
+                    readOnly = true,
+                    enabled = enabled,
+                    onValueChange = { selectedRoom = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor()
+                        .onGloballyPositioned { coordinates ->
+                            textFiledSize = coordinates.size.toSize()
+                        },
+                    label = { Text(text = stringResource(R.string.createRoom)) },
+                    trailingIcon = {
+                        Icon(icon2, "", Modifier.clickable { expanded2 = !expanded2 })
                     },
-                label = { Text(text = stringResource(R.string.createRoom)) },
-                trailingIcon = {
-                    Icon(icon2, "", Modifier.clickable { expanded2 = !expanded2 })
-                },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                    focusedLabelColor = MaterialTheme.colorScheme.primaryContainer,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                        focusedLabelColor = MaterialTheme.colorScheme.primaryContainer,
+                    )
                 )
-            )
+            }
             ExposedDropdownMenu(
                 expanded = expanded2,
                 onDismissRequest = {
@@ -201,26 +207,28 @@ fun QrCreatePhase1(navController: NavController, viewModel: ViewModel1) {
                 expanded3 = !expanded3
             }
         ) {
-            OutlinedTextField(
-                value = selectedMachine,
-                readOnly = true,
-                enabled = enabled2,
-                onValueChange = { selectedMachine = it },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor()
-                    .onGloballyPositioned { coordinates ->
-                        textFiledSize = coordinates.size.toSize()
+            CompositionLocalProvider(LocalTextInputService provides null)  {
+                OutlinedTextField(
+                    value = selectedMachine,
+                    readOnly = true,
+                    enabled = enabled2,
+                    onValueChange = { selectedMachine = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .menuAnchor()
+                        .onGloballyPositioned { coordinates ->
+                            textFiledSize = coordinates.size.toSize()
+                        },
+                    label = { Text(text = stringResource(R.string.createMachine)) },
+                    trailingIcon = {
+                        Icon(icon3, "", Modifier.clickable { expanded3 = !expanded3 })
                     },
-                label = { Text(text = stringResource(R.string.createMachine)) },
-                trailingIcon = {
-                    Icon(icon3, "", Modifier.clickable { expanded3 = !expanded3 })
-                },
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                    focusedLabelColor = MaterialTheme.colorScheme.primaryContainer,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                        focusedLabelColor = MaterialTheme.colorScheme.primaryContainer,
+                    )
                 )
-            )
+            }
             ExposedDropdownMenu(
                 expanded = expanded3,
                 onDismissRequest = {
