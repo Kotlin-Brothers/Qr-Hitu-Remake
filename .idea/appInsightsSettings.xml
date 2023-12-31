@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.qr_hitu" />
-                  <option name="mobileSdkAppId" value="1:110555536250:android:b3177b01fcf68c873d54c3" />
-                  <option name="projectId" value="pap-scanner" />
-                  <option name="projectNumber" value="110555536250" />
+                  <option name="mobileSdkAppId" value="1:131196948252:android:5c5171a2d9600cc423b4d9" />
+                  <option name="projectId" value="qr-hitu-alpha-build" />
+                  <option name="projectNumber" value="131196948252" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
