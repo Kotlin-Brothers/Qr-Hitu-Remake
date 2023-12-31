@@ -188,15 +188,15 @@
                 Once you are on the screen about the machine, you can still delete the machine from the database or update its information.\n\n
                 <b>Create</b>\nWhen you enter this screen you have 2 choices.\n
                 -> Download - This option will ask you where the desired machine is located in order to transfer a QR code referring to it.
-                This QR code will be transferred to your device\'s Downloads folder and you will have the option to choose the file name.
+                This QR code will be transferred to your device\'s Downloads folder and you will have the option to choose the file name.\n
                 -> Create QR - This option will ask you in sequence for the desired location and information about the device, once complete the device will be added to the database and if possible transfer a QR code referring to that new machine.
                 This QR code will be transferred to your device\'s Downloads folder and you will have the option to choose the file name.
             </string>
     //About
         <string name="appVersionT">App Version</string>
-        <string name="appVersion">QR H.I.T.U v1.0.1</string>
+        <string name="appVersion">QR H.I.T.U v0.0.1</string>
         <string name="infoT">Who are we?</string>
-        <string name="info">This application was created by Alexandre Caneca and David Fernandes, we are students of Escola Secundária de Santo André of the GPSI course.\n
+        <string name="info">This application was created by Alexandre Caneca and David Fernandes, we are old students of Escola Secundária de Santo André of the GPSI course.\n
         We developed this project within the scope of the PAP or Professional Aptitude Project with the aim of creating a means of improving control of the malfunctions that occur in the school in an easy and practical way.</string>
     //WifiWarn
         <string name="noWifi">No Internet Connection!</string>
