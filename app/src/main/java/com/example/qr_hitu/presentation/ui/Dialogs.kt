@@ -1,10 +1,9 @@
-package com.example.qr_hitu.functions
+package com.example.qr_hitu.presentation.ui
 
 import android.content.Context
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -14,66 +13,58 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
 import com.example.qr_hitu.components.ScanInput
-
-//  Este ficheiro contém todos os Dialogs usados na aplicação
-//  Em cima de cada função tem uma anotação de onde está a ser usado
-//  As variáveis onDialogDismissed e onDialogConfirm existentes na maioria das funções deste ficheiro têm associado o que a função deve fazer caso o utilizador dê dismiss ou confirm
-
+import com.example.qr_hitu.functions.SettingsManager
+import com.example.qr_hitu.functions.setLocale
 
 //  Create QR Phase 1
 @Composable
 fun ExistsInvDialog(onDialogConfirm: () -> Unit, onDialogDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = { onDialogDismiss() },
-        title = {
+    MainDialog(
+        title = { stringResource(R.string.existDtitle) },
+        bodyText = {
             Text(
-                text = stringResource(R.string.existDtitle),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall
+                text = stringResource(R.string.existDtext),
+                style = MaterialTheme.typography.bodyMedium
             )
         },
-        text = {
-            Text(text = stringResource(R.string.existDtext), style = MaterialTheme.typography.bodyMedium)
-        },
-        confirmButton= {
+        confirmButton = {
             TextButton(onClick = { onDialogConfirm(); }) {
-                Text(text = stringResource(R.string.confirm), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSecondary)
+                Text(
+                    text = stringResource(R.string.confirm),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
             }
         },
         dismissButton = {
             TextButton(onClick = { onDialogDismiss(); }) {
-                Text(text = stringResource(R.string.dismiss), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSecondary)
+                Text(
+                    text = stringResource(R.string.dismiss),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
             }
         },
-        textContentColor = MaterialTheme.colorScheme.onSecondary,
-        titleContentColor = MaterialTheme.colorScheme.onSecondary
+        onDialogDismiss = { onDialogDismiss() },
     )
 }
 
 //  Missing Qr, User Scanner Input and Admin Scanner
 @Composable
-fun WarningDialog(onDialogDismissed: () -> Unit, title: String, text: String) {
-    AlertDialog(
-        onDismissRequest = { onDialogDismissed() },
-        title = {
-            Text(
-                text = title,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall
-            )
-        },
-        text = {
+fun WarningDialog(onDialogDismiss: () -> Unit, title: String, text: String) {
+    MainDialog(
+        title = { title },
+        bodyText = {
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium
             )
         },
         confirmButton = {
-            TextButton(onClick = { onDialogDismissed() }) {
+            TextButton(onClick = { onDialogDismiss() }) {
                 Text(
                     text = "OK",
                     style = MaterialTheme.typography.labelLarge,
@@ -81,24 +72,17 @@ fun WarningDialog(onDialogDismissed: () -> Unit, title: String, text: String) {
                 )
             }
         },
-        textContentColor = MaterialTheme.colorScheme.onSecondary,
-        titleContentColor = MaterialTheme.colorScheme.onSecondary
+        dismissButton = { },
+        onDialogDismiss = { onDialogDismiss() },
     )
 }
 
 //  User Scanner Input
 @Composable
-fun AddMalfDialog(onDialogDismissed: () -> Unit, onDialogConfirm: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = { onDialogDismissed() },
-        title = {
-            Text(
-                text = stringResource(R.string.addMalfDtitle),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall
-            )
-        },
-        text = {
+fun AddMalfDialog(onDialogDismiss: () -> Unit, onDialogConfirm: () -> Unit) {
+    MainDialog(
+        title = { stringResource(R.string.addMalfDtitle) },
+        bodyText = {
             Text(
                 text = stringResource(R.string.addMalfDtext),
                 style = MaterialTheme.typography.bodyMedium
@@ -114,7 +98,7 @@ fun AddMalfDialog(onDialogDismissed: () -> Unit, onDialogConfirm: () -> Unit) {
             }
         },
         dismissButton = {
-            TextButton(onClick = { onDialogDismissed() }) {
+            TextButton(onClick = { onDialogDismiss() }) {
                 Text(
                     text = stringResource(R.string.dismiss),
                     style = MaterialTheme.typography.labelLarge,
@@ -122,86 +106,80 @@ fun AddMalfDialog(onDialogDismissed: () -> Unit, onDialogConfirm: () -> Unit) {
                 )
             }
         },
-        textContentColor = MaterialTheme.colorScheme.onSecondary,
-        titleContentColor = MaterialTheme.colorScheme.onSecondary
-    )
+        onDialogDismiss = { onDialogDismiss() })
 }
 
 //  User Scanner
 @Composable
-fun Malf_ErrorDialogs(onDialogDismissed: () -> Unit, navController: NavController, Err: Boolean ) {
+fun Malf_ErrorDialogs(onDialogDismiss: () -> Unit, navController: NavController, Err: Boolean) {
     //  Condição para verificar se houve um erro
-    if(!Err){
-        AlertDialog(
-            onDismissRequest = { onDialogDismissed() },
-            title = {
+    if (!Err) {
+        MainDialog(
+            title = { stringResource(R.string.addMalfDtitle) },
+            bodyText = {
                 Text(
-                    text = stringResource(R.string.addMalfDtitle),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineSmall
+                    text = stringResource(R.string.addMalfDtext),
+                    style = MaterialTheme.typography.bodyMedium
                 )
-            },
-            text = {
-                Text(text = stringResource(R.string.addMalfDtext), style = MaterialTheme.typography.bodyMedium)
             },
             confirmButton = {
                 TextButton(
                     onClick = { navController.navigate(ScanInput.route) }) {
-                    Text(text = stringResource(R.string.confirm), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSecondary)
+                    Text(
+                        text = stringResource(R.string.confirm),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSecondary
+                    )
                 }
             },
             dismissButton = {
-                TextButton(onClick = { onDialogDismissed()}) {
-                    Text(text = stringResource(R.string.dismiss), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSecondary)
+                TextButton(onClick = { onDialogDismiss() }) {
+                    Text(
+                        text = stringResource(R.string.dismiss),
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSecondary
+                    )
                 }
             },
-            textContentColor = MaterialTheme.colorScheme.onSecondary,
-            titleContentColor = MaterialTheme.colorScheme.onSecondary
-
-        )
-    }else{
-        AlertDialog(
-            onDismissRequest = { onDialogDismissed() },
-            title = {
+            onDialogDismiss = { onDialogDismiss() })
+    } else {
+        MainDialog(
+            title = { stringResource(R.string.error) },
+            bodyText = {
                 Text(
-                    text = stringResource(R.string.error),
-                    textAlign = TextAlign.Center
+                    text = stringResource(R.string.invalidDtext),
+                    style = MaterialTheme.typography.bodyMedium
                 )
             },
-            text = {
-                Text(text = stringResource(R.string.invalidDtext))
-            },
-            confirmButton= {
-                TextButton(onClick = { onDialogDismissed()}) {
+            confirmButton = {
+                TextButton(onClick = { onDialogDismiss() }) {
                     Text(text = "OK")
                 }
             },
-            textContentColor = MaterialTheme.colorScheme.onSecondary,
-            titleContentColor = MaterialTheme.colorScheme.onSecondary
-
-        )
+            dismissButton = { },
+            onDialogDismiss = { onDialogDismiss() })
     }
 }
 
 //  User Scanner Input
 @Composable
-fun DError_Success_Dialogs(error: Boolean, onDialogDismissedError: () -> Unit, onDialogDismissed: () -> Unit) {
+fun DError_Success_Dialogs(
+    error: Boolean,
+    onDialogDismissError: () -> Unit,
+    onDialogDismiss: () -> Unit
+) {
     //  Condição para verificar se houve um erro
     if (error) {
-        AlertDialog(
-            onDismissRequest = { onDialogDismissedError() },
-            title = {
+        MainDialog(
+            title = { stringResource(R.string.error) },
+            bodyText = {
                 Text(
-                    text = stringResource(R.string.error),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineSmall
+                    text = stringResource(R.string.descMalftext),
+                    style = MaterialTheme.typography.bodyMedium
                 )
             },
-            text = {
-                Text(text = stringResource(R.string.descMalftext), style = MaterialTheme.typography.bodyMedium)
-            },
             confirmButton = {
-                TextButton(onClick = { onDialogDismissedError() }) {
+                TextButton(onClick = { onDialogDismissError() }) {
                     Text(
                         text = "OK",
                         style = MaterialTheme.typography.labelLarge,
@@ -209,24 +187,19 @@ fun DError_Success_Dialogs(error: Boolean, onDialogDismissedError: () -> Unit, o
                     )
                 }
             },
-            textContentColor = MaterialTheme.colorScheme.onSecondary,
-            titleContentColor = MaterialTheme.colorScheme.onSecondary
-        )
+            dismissButton = { },
+            onDialogDismiss = { onDialogDismissError() })
     } else {
-        AlertDialog(
-            onDismissRequest = { onDialogDismissed() },
-            title = {
+        MainDialog(
+            title = { stringResource(R.string.success) },
+            bodyText = {
                 Text(
-                    text = stringResource(R.string.success),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.headlineSmall
+                    text = stringResource(R.string.descMalftext2),
+                    style = MaterialTheme.typography.bodyMedium
                 )
             },
-            text = {
-                Text(text = stringResource(R.string.descMalftext2), style = MaterialTheme.typography.bodyMedium)
-            },
             confirmButton = {
-                TextButton(onClick = { onDialogDismissed() }) {
+                TextButton(onClick = { onDialogDismiss() }) {
                     Text(
                         text = "OK",
                         style = MaterialTheme.typography.labelLarge,
@@ -234,9 +207,8 @@ fun DError_Success_Dialogs(error: Boolean, onDialogDismissedError: () -> Unit, o
                     )
                 }
             },
-            textContentColor = MaterialTheme.colorScheme.onSecondary,
-            titleContentColor = MaterialTheme.colorScheme.onSecondary
-        )
+            dismissButton = { },
+            onDialogDismiss = { onDialogDismiss() })
     }
 }
 
@@ -248,17 +220,9 @@ fun ThemeDialog(
     switch: MutableState<String>,
     settingsManager: SettingsManager
 ) {
-    AlertDialog(
-        onDismissRequest = { showThemeState.value = false },
-        title = {
-            Text(
-                text = stringResource(R.string.themeDTitle),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall
-            )
-        },
-        text = {
-            //  Interface do Dialog
+    MainDialog(
+        title = { stringResource(R.string.themeDTitle) },
+        bodyText = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -302,9 +266,8 @@ fun ThemeDialog(
                 )
             }
         },
-        textContentColor = MaterialTheme.colorScheme.onSecondary,
-        titleContentColor = MaterialTheme.colorScheme.onSecondary,
-    )
+        dismissButton = { },
+        onDialogDismiss = { showThemeState.value = false })
 }
 
 //  Settings
@@ -316,17 +279,9 @@ fun LanguageDialog(
     context: Context,
     setRecompose: (Boolean) -> Unit
 ) {
-    AlertDialog(
-        onDismissRequest = { showLanguageState.value = false },
-        title = {
-            Text(
-                text = stringResource(R.string.langDTitle),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall
-            )
-        },
-        text = {
-            //  Interface do Dialog
+    MainDialog(
+        title = { stringResource(R.string.langDTitle) },
+        bodyText = {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -378,37 +333,23 @@ fun LanguageDialog(
                 )
             }
         },
-        textContentColor = MaterialTheme.colorScheme.onSecondary,
-        titleContentColor = MaterialTheme.colorScheme.onSecondary
-    )
+        dismissButton = { },
+        onDialogDismiss = { showLanguageState.value = false })
 }
 
 //  Overlays and Missing Qr List
 @Composable
-fun DelDialog(onDialogDismissed: () -> Unit, onDeleteClick: () -> Unit, title: String, text: String) {
-    AlertDialog(
-        onDismissRequest = { onDialogDismissed() },
-        title = {
-            Text(
-                text = title,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall
-            )
-        },
-        text = {
-            Text(text = text, style = MaterialTheme.typography.bodyLarge)
-        },
-        dismissButton = {
-            TextButton(onClick = { onDialogDismissed() }) {
-                Text(
-                    text = stringResource(R.string.dismiss),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onSecondary
-                )
-            }
-        },
+fun DelDialog(
+    onDialogDismiss: () -> Unit,
+    onDeleteClick: () -> Unit,
+    title: String,
+    text: String
+) {
+    MainDialog(
+        title = { title },
+        bodyText = { Text(text = text, style = MaterialTheme.typography.bodyLarge) },
         confirmButton = {
-            TextButton(onClick = { onDialogDismissed(); onDeleteClick() }) {
+            TextButton(onClick = { onDialogDismiss(); onDeleteClick() }) {
                 Text(
                     text = stringResource(R.string.confirm),
                     style = MaterialTheme.typography.labelLarge,
@@ -416,25 +357,25 @@ fun DelDialog(onDialogDismissed: () -> Unit, onDeleteClick: () -> Unit, title: S
                 )
             }
         },
-        textContentColor = MaterialTheme.colorScheme.onSecondary,
-        titleContentColor = MaterialTheme.colorScheme.onSecondary
-    )
+        dismissButton = {
+            TextButton(onClick = { onDialogDismiss() }) {
+                Text(
+                    text = stringResource(R.string.dismiss),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+            }
+        },
+        onDialogDismiss = { onDialogDismiss() })
 }
 
 
 //  Malfunction Info
 @Composable
-fun CompleteMalfDialog(onDialogDismissed: () -> Unit, onDialogConfirm: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = { onDialogDismissed() },
-        title = {
-            Text(
-                text = stringResource(R.string.compMDtitle),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineSmall
-            )
-        },
-        text = {
+fun CompleteMalfDialog(onDialogDismiss: () -> Unit, onDialogConfirm: () -> Unit) {
+    MainDialog(
+        title = { stringResource(R.string.compMDtitle) },
+        bodyText = {
             Text(
                 text = stringResource(R.string.compMDtext),
                 style = MaterialTheme.typography.bodyMedium
@@ -450,7 +391,7 @@ fun CompleteMalfDialog(onDialogDismissed: () -> Unit, onDialogConfirm: () -> Uni
             }
         },
         dismissButton = {
-            TextButton(onClick = { onDialogDismissed() }) {
+            TextButton(onClick = { onDialogDismiss() }) {
                 Text(
                     text = stringResource(R.string.dismiss),
                     style = MaterialTheme.typography.labelLarge,
@@ -458,7 +399,5 @@ fun CompleteMalfDialog(onDialogDismissed: () -> Unit, onDialogConfirm: () -> Uni
                 )
             }
         },
-        textContentColor = MaterialTheme.colorScheme.onSecondary,
-        titleContentColor = MaterialTheme.colorScheme.onSecondary
-    )
+        onDialogDismiss = { onDialogDismiss() })
 }

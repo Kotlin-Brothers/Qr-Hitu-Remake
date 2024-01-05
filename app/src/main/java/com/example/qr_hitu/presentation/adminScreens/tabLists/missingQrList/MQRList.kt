@@ -61,14 +61,14 @@ fun MissingQrList(navController: NavController) {
     }
 
     //  Caso não exista itens a apresentar
-    if(list.isEmpty() && !isLoading){
+    if (list.isEmpty() && !isLoading) {
         EmptyListScreen(text = stringResource(R.string.missingListText))
     } else {
-        if(isLoading){
+        if (isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
-            ){
+            ) {
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.primary,
                     strokeWidth = 5.dp
@@ -106,9 +106,11 @@ fun MissingQrList(navController: NavController) {
                                 "Projetor" -> {
                                     Icon(Icons.Filled.VideocamOff, "Projector")
                                 }
+
                                 "Impressora" -> {
                                     Icon(Icons.Filled.Print, "Impressora")
                                 }
+
                                 else -> {
                                     Icon(Icons.Filled.Computer, "Computer")
                                 }
@@ -135,11 +137,15 @@ fun MissingQrList(navController: NavController) {
                             }
                         }
                         //  Mostra Dialog
-                        if(show.value){
+                        if (show.value) {
                             DelDialog(
-                                onDialogDismissed = { show.value = false},
+                                onDialogDismiss = { show.value = false },
                                 //  Apaga alerta e atualiza a lista
-                                onDeleteClick = { delMissing(item.room, item.machine); getMissingQR(setList) },
+                                onDeleteClick = {
+                                    delMissing(item.room, item.machine); getMissingQR(
+                                    setList
+                                )
+                                },
                                 title = stringResource(R.string.delMDtitle),
                                 text = stringResource(R.string.delMDtext)
                             )

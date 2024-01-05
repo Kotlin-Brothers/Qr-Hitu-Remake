@@ -7,10 +7,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
-import com.example.qr_hitu.presentation.ui.overlays.ScaffoldLayouts
 import com.example.qr_hitu.functions.SettingsManager
 import com.example.qr_hitu.functions.setLocale
-import com.example.qr_hitu.presentation.ui.theme.QRHITUTheme
+import com.example.qr_hitu.presentation.theme.QRHITUTheme
+import com.example.qr_hitu.presentation.ui.ScaffoldLayouts
 
 //  Neste ficheiro é onde toda a aplicação se liga e todas as partes importantes são definidas
 @Composable
@@ -24,8 +24,15 @@ fun QrHituApp() {
     //  Estado de troca de tema
     val switch = remember { mutableStateOf("") }
     //  Verificação de qual idioma está selecionado
-    val theme by rememberUpdatedState(if (switch.value == "") { settingsManager.getSetting("Theme", "" ) } else switch.value)
-    setLocale(if (settingsManager.getSetting("Language", "pt") == "pt") "pt" else "en", localContext)
+    val theme by rememberUpdatedState(
+        if (switch.value == "") {
+            settingsManager.getSetting("Theme", "")
+        } else switch.value
+    )
+    setLocale(
+        if (settingsManager.getSetting("Language", "pt") == "pt") "pt" else "en",
+        localContext
+    )
 
     //  Tema da app
     QRHITUTheme(

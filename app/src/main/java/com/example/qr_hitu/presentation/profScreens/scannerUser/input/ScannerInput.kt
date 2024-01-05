@@ -2,14 +2,38 @@ package com.example.qr_hitu.presentation.profScreens.scannerUser.input
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
@@ -22,15 +46,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
-import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.example.qr_hitu.components.UserChoices
-import com.example.qr_hitu.functions.WarningDialog
 import com.example.qr_hitu.functions.DError_Success_Dialogs
-import com.example.qr_hitu.functions.addMalfunction
 import com.example.qr_hitu.functions.SendEmail
 import com.example.qr_hitu.functions.SettingsManager
+import com.example.qr_hitu.functions.WarningDialog
+import com.example.qr_hitu.functions.addMalfunction
 import com.example.qr_hitu.functions.getOptions
 import com.example.qr_hitu.functions.malfunctionExists
+import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDateTime
@@ -41,7 +65,11 @@ import java.time.temporal.ChronoUnit
 //  Tela para escolher qual avaria o dispositivo tem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScannerInput(navController: NavController, viewModel: ScannerViewModel, settingsManager: SettingsManager) {
+fun ScannerInput(
+    navController: NavController,
+    viewModel: ScannerViewModel,
+    settingsManager: SettingsManager
+) {
 
     val dateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -88,9 +116,9 @@ fun ScannerInput(navController: NavController, viewModel: ScannerViewModel, sett
     }
 
     Scaffold(
-        topBar = { TopBarInput(navController, settingsManager)}
+        topBar = { TopBarInput(navController, settingsManager) }
     ) { innerPadding ->
-        Box (modifier = Modifier.padding(innerPadding)) {
+        Box(modifier = Modifier.padding(innerPadding)) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -300,14 +328,14 @@ fun ScannerInput(navController: NavController, viewModel: ScannerViewModel, sett
                 when {
                     show.value -> DError_Success_Dialogs(
                         error = err.value,
-                        onDialogDismissed = {
+                        onDialogDismiss = {
                             show.value = false; navController.navigate(UserChoices.route)
                         },
-                        onDialogDismissedError = { show.value = false; err.value = false; }
+                        onDialogDismissError = { show.value = false; err.value = false; }
                     )
 
                     show1.value -> WarningDialog(
-                        onDialogDismissed = {
+                        onDialogDismiss = {
                             show1.value = false; navController.navigate(UserChoices.route)
                         },
                         title = stringResource(R.string.existWMDtitle),

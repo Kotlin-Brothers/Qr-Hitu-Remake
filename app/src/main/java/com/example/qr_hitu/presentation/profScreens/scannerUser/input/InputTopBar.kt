@@ -4,18 +4,14 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.example.qr_hitu.components.UserChoices
-import com.example.qr_hitu.presentation.ui.overlays.MenuOptions
 import com.example.qr_hitu.functions.SettingsManager
-import com.example.qr_hitu.presentation.ui.overlays.MainTopBar
-import com.example.qr_hitu.presentation.ui.overlays.emailString
+import com.example.qr_hitu.presentation.ui.MainTopBar
+import com.example.qr_hitu.presentation.ui.MenuOptions
+import com.example.qr_hitu.presentation.ui.emailString
 
 
 @Composable

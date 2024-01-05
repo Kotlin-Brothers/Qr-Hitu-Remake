@@ -1,6 +1,4 @@
-
-
-package com.example.qr_hitu.presentation.ui.theme
+package com.example.qr_hitu.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -13,34 +11,34 @@ val replyTypography = Typography(
     displayLarge = TextStyle(
         fontWeight = FontWeight.ExtraBold,
         fontFamily = FontFamily.SansSerif,
-        fontSize = 57. sp,
-        lineHeight = 64. sp,
+        fontSize = 57.sp,
+        lineHeight = 64.sp,
         letterSpacing = 0.sp
     ),
     titleLarge = TextStyle(
         fontWeight = FontWeight.SemiBold,
         fontFamily = FontFamily.SansSerif,
-        fontSize = 22. sp,
-        lineHeight = 28. sp,
-        letterSpacing = 0. sp
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
     ),
     titleMedium = TextStyle(
         fontWeight = FontWeight.SemiBold,
         fontFamily = FontFamily.SansSerif,
-        fontSize = 16. sp,
-        lineHeight = 24. sp,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
         letterSpacing = 0.15.sp
     ),
     bodyLarge = TextStyle(
         fontFamily = FontFamily.SansSerif,
-        fontSize = 16. sp,
-        lineHeight = 24. sp,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
         letterSpacing = 0.15.sp
     ),
     labelMedium = TextStyle(
         fontFamily = FontFamily.SansSerif,
-        fontSize = 11.5. sp,
-        lineHeight = 16. sp,
+        fontSize = 11.5.sp,
+        lineHeight = 16.sp,
         letterSpacing = 0.5.sp
     )
 )

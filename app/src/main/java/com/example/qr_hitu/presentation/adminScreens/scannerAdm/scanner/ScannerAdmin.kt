@@ -25,16 +25,16 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
-import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.example.qr_hitu.components.ScanAdmin
 import com.example.qr_hitu.components.ScannerAdminInfo
-import com.example.qr_hitu.functions.WarningDialog
 import com.example.qr_hitu.functions.SettingsManager
+import com.example.qr_hitu.functions.WarningDialog
 import com.example.qr_hitu.functions.decryptAES
 import com.example.qr_hitu.functions.encryptionKey
 import com.example.qr_hitu.functions.isEncryptedString
 import com.example.qr_hitu.functions.loadListFromSettings
 import com.example.qr_hitu.functions.saveListToSettings
+import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -50,7 +50,11 @@ import kotlin.coroutines.suspendCoroutine
 @SuppressLint("MutableCollectionMutableState")
 @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
 @Composable
-fun ScannerAdminScreen(navController: NavController, viewModel: ScannerViewModel = hiltViewModel(), settingsManager: SettingsManager) {
+fun ScannerAdminScreen(
+    navController: NavController,
+    viewModel: ScannerViewModel = hiltViewModel(),
+    settingsManager: SettingsManager
+) {
 
 
     //  Lista dos QR Recentes
@@ -63,13 +67,14 @@ fun ScannerAdminScreen(navController: NavController, viewModel: ScannerViewModel
     }
 
     //  Mostrar Dialog
-    val show= remember { mutableStateOf(false) }
+    val show = remember { mutableStateOf(false) }
 
     //  Pede permissão para usar a camara
     var permission = true
-    val requestPermissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-        permission = isGranted
-    }
+    val requestPermissionLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            permission = isGranted
+        }
 
     //  Definições para a camara
     val context = LocalContext.current as Activity
@@ -80,7 +85,7 @@ fun ScannerAdminScreen(navController: NavController, viewModel: ScannerViewModel
     val previewView = remember {
         PreviewView(context)
     }
-    val analysisUseCase : ImageAnalysis = ImageAnalysis.Builder().build()
+    val analysisUseCase: ImageAnalysis = ImageAnalysis.Builder().build()
     val cameraSelector = CameraSelector.Builder()
         .requireLensFacing(lensFacing)
         .build()
@@ -133,15 +138,19 @@ fun ScannerAdminScreen(navController: NavController, viewModel: ScannerViewModel
                             val decodedValue = decryptAES(value, encryptionKey)
 
                             //  Verifica se o conteúdo não coincide
-                            if(!Regex("""Bloco \w+,Sala \p{all}+,\w+\w+""").containsMatchIn(decodedValue)){
+                            if (!Regex("""Bloco \w+,Sala \p{all}+,\w+\w+""").containsMatchIn(
+                                    decodedValue
+                                )
+                            ) {
                                 //  Mostra Dialog de erro
                                 show.value = true
-                            }else{
+                            } else {
                                 //  Vai buscar a data atual
-                                val date = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+                                val date = LocalDate.now()
+                                    .format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
 
                                 //  Verifica se o QR já estava na lista de recentes
-                                if (qrSet.value.any{ it.startsWith(decodedValue) }) {
+                                if (qrSet.value.any { it.startsWith(decodedValue) }) {
                                     //  Apaga da lista de recentes
                                     qrList.removeAll { it.startsWith(decodedValue) }
                                 }
@@ -215,7 +224,7 @@ fun ScannerAdminScreen(navController: NavController, viewModel: ScannerViewModel
     }
 
     //  Coroutine que ativa sempre que esta tela saí da composição
-    DisposableEffect(Unit){
+    DisposableEffect(Unit) {
         onDispose {
             //  Se trocarmos de tela ativa
             //  Esta condição foi necessária para evitar que sempre que um dialog abra a camara tenha de reiniciar
@@ -226,12 +235,12 @@ fun ScannerAdminScreen(navController: NavController, viewModel: ScannerViewModel
     }
 
     //  Condição que verifica a permissão
-    if (permission){
+    if (permission) {
         AndroidView({ previewView }, modifier = Modifier.fillMaxSize())
         //  Condição para mostrar Dialog de erro
         if (show.value) {
             WarningDialog(
-                onDialogDismissed = { show.value = false },
+                onDialogDismiss = { show.value = false },
                 title = stringResource(R.string.error),
                 text = stringResource(R.string.invalidDtext)
             )

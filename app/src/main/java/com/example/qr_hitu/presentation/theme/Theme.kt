@@ -1,4 +1,4 @@
-package com.example.qr_hitu.presentation.ui.theme
+package com.example.qr_hitu.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -28,26 +28,35 @@ private val DarkColors = darkColorScheme(
 
 
 @Composable
-fun QRHITUTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit, theme: String) {
+fun QRHITUTheme(
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit,
+    theme: String
+) {
 
     val systemUiController = rememberSystemUiController()
-    when (theme){
+    when (theme) {
         "Light" -> systemUiController.setStatusBarColor(
             color = Color(0xFF03A9F4),
             darkIcons = false
         )
+
         "Dark" -> systemUiController.setStatusBarColor(
             color = Color(0xFF026897),
             darkIcons = true
         )
-        else -> if (isDarkTheme) systemUiController.setStatusBarColor(color = Color(0xFF026897), darkIcons = true) else systemUiController.setStatusBarColor(color = Color(0xFF03A9F4), darkIcons = false)
+
+        else -> if (isDarkTheme) systemUiController.setStatusBarColor(
+            color = Color(0xFF026897),
+            darkIcons = true
+        ) else systemUiController.setStatusBarColor(color = Color(0xFF03A9F4), darkIcons = false)
     }
 
     MaterialTheme(
         content = content,
         shapes = replyShapes,
         typography = replyTypography,
-        colorScheme = when(theme) {
+        colorScheme = when (theme) {
             "Light" -> LightColors
             "Dark" -> DarkColors
             else -> if (isDarkTheme) DarkColors else LightColors

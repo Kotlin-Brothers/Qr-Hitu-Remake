@@ -1,4 +1,4 @@
-package com.example.qr_hitu.presentation.ui.theme
+package com.example.qr_hitu.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
@@ -18,6 +18,7 @@ sealed class ThemeColors(
         containerText = Color(0xFFE1F5FE), //White 50
         secondaryText = Color(0xFF000000) //Black
     )
+
     object Dark : ThemeColors(
         background = Color(0xFF424242), // Dark Gray
         primary = Color(0xFF0988c3), //Cyan 700
