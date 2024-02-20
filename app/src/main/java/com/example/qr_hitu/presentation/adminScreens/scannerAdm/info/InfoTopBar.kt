@@ -17,9 +17,9 @@ import androidx.navigation.NavController
 import com.example.qr_hitu.R
 import com.example.qr_hitu.components.ScannerAdminInfoUpdate
 import com.example.qr_hitu.components.TabScreen
-import com.example.qr_hitu.functions.DelDialog
 import com.example.qr_hitu.functions.SettingsManager
 import com.example.qr_hitu.functions.delDispositivo
+import com.example.qr_hitu.presentation.ui.DelDialog
 import com.example.qr_hitu.presentation.ui.MainTopBar
 import com.example.qr_hitu.presentation.ui.MenuOptions
 import com.example.qr_hitu.presentation.ui.emailString

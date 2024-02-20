@@ -47,13 +47,13 @@ import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
 import com.example.qr_hitu.components.UserChoices
-import com.example.qr_hitu.functions.DError_Success_Dialogs
 import com.example.qr_hitu.functions.SendEmail
 import com.example.qr_hitu.functions.SettingsManager
-import com.example.qr_hitu.functions.WarningDialog
 import com.example.qr_hitu.functions.addMalfunction
 import com.example.qr_hitu.functions.getOptions
 import com.example.qr_hitu.functions.malfunctionExists
+import com.example.qr_hitu.presentation.ui.DError_Success_Dialogs
+import com.example.qr_hitu.presentation.ui.WarningDialog
 import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

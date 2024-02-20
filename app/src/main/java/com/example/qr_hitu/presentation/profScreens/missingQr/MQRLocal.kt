@@ -37,12 +37,12 @@ import androidx.navigation.NavController
 import com.example.qr_hitu.R
 import com.example.qr_hitu.components.ScanInput
 import com.example.qr_hitu.components.UserChoices
-import com.example.qr_hitu.functions.AddMalfDialog
 import com.example.qr_hitu.functions.SendEmail
-import com.example.qr_hitu.functions.WarningDialog
 import com.example.qr_hitu.functions.addMissQR
 import com.example.qr_hitu.functions.existentPcs
 import com.example.qr_hitu.functions.missQrExists
+import com.example.qr_hitu.presentation.ui.AddMalfDialog
+import com.example.qr_hitu.presentation.ui.WarningDialog
 import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

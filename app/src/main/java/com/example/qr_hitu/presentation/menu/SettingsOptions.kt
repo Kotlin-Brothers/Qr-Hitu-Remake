@@ -31,10 +31,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
 import com.example.qr_hitu.components.About
-import com.example.qr_hitu.functions.LanguageDialog
 import com.example.qr_hitu.functions.SettingsManager
-import com.example.qr_hitu.functions.ThemeDialog
 import com.example.qr_hitu.functions.snackbar
+import com.example.qr_hitu.presentation.ui.LanguageDialog
+import com.example.qr_hitu.presentation.ui.ThemeDialog
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay

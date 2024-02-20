@@ -35,11 +35,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
-import com.example.qr_hitu.functions.DelDialog
 import com.example.qr_hitu.functions.MissingQrDocs
 import com.example.qr_hitu.functions.delMissing
 import com.example.qr_hitu.functions.getMissingQR
 import com.example.qr_hitu.presentation.adminScreens.tabLists.EmptyListScreen
+import com.example.qr_hitu.presentation.ui.DelDialog
 
 
 //  Tela com a lista de alertas de falta de QR

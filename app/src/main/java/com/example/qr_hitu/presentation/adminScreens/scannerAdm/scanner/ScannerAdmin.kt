@@ -28,12 +28,13 @@ import com.example.qr_hitu.R
 import com.example.qr_hitu.components.ScanAdmin
 import com.example.qr_hitu.components.ScannerAdminInfo
 import com.example.qr_hitu.functions.SettingsManager
-import com.example.qr_hitu.functions.WarningDialog
+
 import com.example.qr_hitu.functions.decryptAES
 import com.example.qr_hitu.functions.encryptionKey
 import com.example.qr_hitu.functions.isEncryptedString
 import com.example.qr_hitu.functions.loadListFromSettings
 import com.example.qr_hitu.functions.saveListToSettings
+import com.example.qr_hitu.presentation.ui.WarningDialog
 import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions

@@ -22,8 +22,8 @@ import com.example.qr_hitu.R
 import com.example.qr_hitu.presentation.viewModels.ViewModel1
 import com.example.qr_hitu.components.AdminChoices
 import com.example.qr_hitu.components.Create2
-import com.example.qr_hitu.functions.ExistsInvDialog
 import com.example.qr_hitu.functions.qrExists
+import com.example.qr_hitu.presentation.ui.ExistsInvDialog
 
 
 //  Tela inicial para criar QR Code

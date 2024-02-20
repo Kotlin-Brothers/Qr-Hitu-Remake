@@ -31,10 +31,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
-import com.example.qr_hitu.functions.CompleteMalfDialog
 import com.example.qr_hitu.functions.completeMalfunction
 import com.example.qr_hitu.functions.seeDispositivo
 import com.example.qr_hitu.functions.seeMalfunction
+import com.example.qr_hitu.presentation.ui.CompleteMalfDialog
 import com.example.qr_hitu.presentation.viewModels.MalfunctionViewModel
 
 @Composable

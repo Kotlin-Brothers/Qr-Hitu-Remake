@@ -156,6 +156,9 @@
         //CompleteMalfDialog
             <string name="compMDtitle">Completar</string>
             <string name="compMDtext">Gostaria de fechar este alerta?</string>
+        //AutoUpdDialog
+            <string name="updTitle">Atualização Necessária</string>
+            <string name="updBody">A aplicação irá atualizar, por favor aguarde.</string>
     //Snackbars
         //DownloadSnackbar
             <string name="downloadStext">Download realizado com sucesso !</string>

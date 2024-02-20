@@ -22,10 +22,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.example.qr_hitu.components.ScanProf
-import com.example.qr_hitu.functions.Malf_ErrorDialogs
 import com.example.qr_hitu.functions.decryptAES
 import com.example.qr_hitu.functions.encryptionKey
 import com.example.qr_hitu.functions.isEncryptedString
+import com.example.qr_hitu.presentation.ui.Malf_ErrorDialogs
 import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions

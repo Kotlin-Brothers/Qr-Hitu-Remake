@@ -32,6 +32,7 @@ import com.example.qr_hitu.functions.snackbar
 import com.example.qr_hitu.functions.SettingsManager
 import com.example.qr_hitu.functions.UpdateVer
 import com.example.qr_hitu.functions.loginVerify
+import com.example.qr_hitu.presentation.ui.MainDialog
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -62,7 +63,7 @@ fun LoginScreen(
     val enabled = emailValue.isNotEmpty() && passwordValue.isNotEmpty()
     //  Mostra Snackbar de erro
     var showError by remember { mutableStateOf(false) }
-
+    val updDialog = remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     //  Coroutine
     val scope = rememberCoroutineScope()
@@ -79,10 +80,11 @@ fun LoginScreen(
     //  Abre Coroutine
     GlobalScope.launch {
         val latestVersion = UpdateVer(context).checkUpdate(version)
-        if(latestVersion != "") {
-
+        if(latestVersion != version) {
+            updDialog.value = true
             UpdateVer(context).enqueueDownload(latestVersion)
         } else {
+            updDialog.value = false
             //  Verifica se o utilizador tem a opção autoLogin ativa
             if (settingsManager.getSetting("AutoLogin", "false") == "true") {
                 //  Vai buscar o email do utilizador atual
@@ -257,6 +259,14 @@ fun LoginScreen(
                     showSnack.value = false
                 }
             }
+        }
+
+        if (updDialog.value) {
+            MainDialog(
+                title = { stringResource(R.string.updTitle) },
+                bodyText = { Text(text = stringResource(R.string.updBody)) },
+                confirmButton = {},
+                dismissButton = {}){}
         }
     }
 }
