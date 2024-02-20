@@ -109,6 +109,12 @@ dependencies {
     //Preferences
     implementation(libs.preference.ktx)
 
+    //HTTP requests
+    implementation(libs.okhttp)
+
+    //JSON parsing
+    implementation(libs.gson)
+
     //implementation "androidx.biometric:biometric:1.2.0"
     //implementation "androidx.biometric:biometric-ktx:1.2.0-alpha05"
 }

@@ -1,5 +1,6 @@
 package com.example.qr_hitu.presentation
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,8 +12,11 @@ import com.example.qr_hitu.presentation.ui.overlays.ScaffoldLayouts
 import com.example.qr_hitu.functions.SettingsManager
 import com.example.qr_hitu.functions.setLocale
 import com.example.qr_hitu.presentation.ui.theme.QRHITUTheme
+import kotlinx.coroutines.DelicateCoroutinesApi
 
 //  Neste ficheiro é onde toda a aplicação se liga e todas as partes importantes são definidas
+@OptIn(DelicateCoroutinesApi::class)
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun QrHituApp() {
     val localContext = LocalContext.current

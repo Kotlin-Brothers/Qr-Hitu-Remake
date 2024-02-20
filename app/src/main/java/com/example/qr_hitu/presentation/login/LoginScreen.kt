@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,14 +30,19 @@ import com.example.qr_hitu.components.ForgotPass
 import com.example.qr_hitu.components.Loading
 import com.example.qr_hitu.functions.snackbar
 import com.example.qr_hitu.functions.SettingsManager
+import com.example.qr_hitu.functions.UpdateVer
 import com.example.qr_hitu.functions.loginVerify
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
 //  Tela de Login
+@OptIn(DelicateCoroutinesApi::class)
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun LoginScreen(
@@ -44,7 +50,7 @@ fun LoginScreen(
     settingsManager: SettingsManager,
     isDarkTheme: Boolean = isSystemInDarkTheme()
 ) {
-
+    val context = LocalContext.current
     //  Estados para guardar o email e a password
     var emailValue by remember { mutableStateOf("") }
     var passwordValue by remember { mutableStateOf("") }
@@ -67,21 +73,29 @@ fun LoginScreen(
             settingsManager.getSetting("Theme", "")
         } else switch.value
     )
+    val version = stringResource(R.string.appVersion)
+
 
     //  Abre Coroutine
-    scope.launch {
-        //  Verifica se o utilizador tem a opção autoLogin ativa
-        if (settingsManager.getSetting("AutoLogin", "false") == "true") {
-            //  Vai buscar o email do utilizador atual
-            val email = Firebase.auth.currentUser?.email
-            //  Delay de 0.5 segundos
-            delay(500)
+    GlobalScope.launch {
+        val latestVersion = UpdateVer(context).checkUpdate(version)
+        if(latestVersion != "") {
 
-            //  Caso exista utilizador atual
-            if (Firebase.auth.currentUser != null) {
-                //  Envia para a tela de Loading e verifica se é admin ou user
-                navController.navigate(Loading.route)
-                loginVerify(navController, email, settingsManager)
+            UpdateVer(context).enqueueDownload(latestVersion)
+        } else {
+            //  Verifica se o utilizador tem a opção autoLogin ativa
+            if (settingsManager.getSetting("AutoLogin", "false") == "true") {
+                //  Vai buscar o email do utilizador atual
+                val email = Firebase.auth.currentUser?.email
+                //  Delay de 0.5 segundos
+                delay(500)
+
+                //  Caso exista utilizador atual
+                if (Firebase.auth.currentUser != null) {
+                    //  Envia para a tela de Loading e verifica se é admin ou user
+                    navController.navigate(Loading.route)
+                    loginVerify(navController, email, settingsManager)
+                }
             }
         }
     }
@@ -101,12 +115,12 @@ fun LoginScreen(
         ) {
 
             Spacer(modifier = Modifier.padding(10.dp))
-
+/*
             Text(
                 text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.displayLarge,
                 color = MaterialTheme.colorScheme.onSecondary
-            )
+            )*/
 
             Spacer(modifier = Modifier.padding(25.dp))
 
