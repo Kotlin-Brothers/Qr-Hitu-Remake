@@ -1,4 +1,4 @@
-package com.example.qr_hitu.presentation.ui.overlays
+package com.example.qr_hitu.presentation.ui
 
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton

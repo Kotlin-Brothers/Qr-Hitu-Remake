@@ -35,15 +35,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
-import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.example.qr_hitu.components.ScanInput
 import com.example.qr_hitu.components.UserChoices
 import com.example.qr_hitu.functions.AddMalfDialog
+import com.example.qr_hitu.functions.SendEmail
 import com.example.qr_hitu.functions.WarningDialog
 import com.example.qr_hitu.functions.addMissQR
-import com.example.qr_hitu.functions.SendEmail
 import com.example.qr_hitu.functions.existentPcs
 import com.example.qr_hitu.functions.missQrExists
+import com.example.qr_hitu.presentation.viewModels.ScannerViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -124,7 +124,11 @@ fun MQRLocal(navController: NavController, viewModel: ScannerViewModel) {
 
         Spacer(modifier = Modifier.padding(20.dp))
 
-        Text(text = stringResource(R.string.mQRLocal), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondary)
+        Text(
+            text = stringResource(R.string.mQRLocal),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
 
         Spacer(modifier = Modifier.padding(10.dp))
 
@@ -227,7 +231,11 @@ fun MQRLocal(navController: NavController, viewModel: ScannerViewModel) {
 
         Spacer(modifier = Modifier.padding(10.dp))
 
-        Text(text = stringResource(R.string.mQRMachine), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSecondary)
+        Text(
+            text = stringResource(R.string.mQRMachine),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSecondary
+        )
 
         Spacer(modifier = Modifier.padding(10.dp))
 
@@ -297,12 +305,24 @@ fun MQRLocal(navController: NavController, viewModel: ScannerViewModel) {
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             )
         ) {
-            Text(text = stringResource(R.string.mQRSend), style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = stringResource(R.string.mQRSend),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
 
         //  Condição para enviar email
-        if (sendE.value){
-            SendEmail(Firebase.auth.currentUser?.email!!, selectedBlock, selectedRoom, selectedMachine, "a falta de um QR", "Falta QR", "", false)
+        if (sendE.value) {
+            SendEmail(
+                Firebase.auth.currentUser?.email!!,
+                selectedBlock,
+                selectedRoom,
+                selectedMachine,
+                "a falta de um QR",
+                "Falta QR",
+                "",
+                false
+            )
             sendE.value = false
         }
 
@@ -310,7 +330,7 @@ fun MQRLocal(navController: NavController, viewModel: ScannerViewModel) {
         if (showErr.value) {
             WarningDialog(
                 //  Mostra Dialog de adicionar avaria
-                onDialogDismissed = { show.value = true; showErr.value = false },
+                onDialogDismiss = { show.value = true; showErr.value = false },
                 title = stringResource(R.string.existWDtitle),
                 text = stringResource(R.string.existWDtext)
             )
@@ -319,7 +339,7 @@ fun MQRLocal(navController: NavController, viewModel: ScannerViewModel) {
         //  Mostra Dialog de adicionar avaria
         if (show.value) {
             AddMalfDialog(
-                onDialogDismissed = {
+                onDialogDismiss = {
                     //  Envia para a tela de escolha
                     show.value = false; navController.navigate(UserChoices.route)
                 },
