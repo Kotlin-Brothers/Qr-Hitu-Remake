@@ -7,9 +7,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
+import com.example.qr_hitu.components.Loading
 import com.example.qr_hitu.components.TabScreen
 import com.example.qr_hitu.components.UserChoices
-import com.google.firebase.firestore.CollectionReference
+import com.example.qr_hitu.data.Constants.ADMIN_COLLECTION
+import com.example.qr_hitu.data.Constants.DEFAULT_COLLECTION
+import com.example.qr_hitu.data.Constants.DONE_MALF_COLLECTION
+import com.example.qr_hitu.data.Constants.INVENTORY_COLLECTION
+import com.example.qr_hitu.data.Constants.MALFUNCTIONS_COLLECTION
+import com.example.qr_hitu.data.Constants.MISSING_COLLECTION
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -20,6 +26,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 //Neste ficheiro estão as funções relacionadas com a comunicação com a base de dados, como por exemplo colocar algo novo na base de dados ou remover algo
 
@@ -37,7 +45,7 @@ fun addDispositivo(
 
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .set() define a informação do documento atual
-    db.collection("Inventário")
+    db.collection(INVENTORY_COLLECTION)
         .document(block)
         .collection(room)
         .document(machine)
@@ -54,7 +62,7 @@ fun delDispositivo(
 
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .delete() apaga o documento atual
-    db.collection("Inventário")
+    db.collection(INVENTORY_COLLECTION)
         .document(block)
         .collection(room)
         .document(machine)
@@ -72,7 +80,7 @@ fun seeDispositivo(
 
     //  A variável collectionReference foi criada para não deixar o código muito denso
     //  .collection() identifica a coleção, .document() identifica o documento
-    val collectionReference = db.collection("Inventário")
+    val collectionReference = db.collection(INVENTORY_COLLECTION)
         .document(block)
         .collection(room)
         .document(machine)
@@ -114,7 +122,7 @@ fun addMissQR(
 
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .set() define a informação do documento atual
-    db.collection("Falta QR")
+    db.collection(MISSING_COLLECTION)
         .document("$room $machine")
         .set(data)
 }
@@ -126,7 +134,8 @@ fun addMalfunction(
     machine: String,
     malfunction: String,    //  As variáveis malfunction, urgent e email têm as informações sobra a avaria, se é urgente e quem a alertou
     urgent: Boolean,
-    email: String
+    email: String,
+    dateAdd: String
 ) {
     //  Cria um map com as informações
     val data = hashMapOf(
@@ -135,13 +144,14 @@ fun addMalfunction(
         "Dispositivo" to machine,
         "Avaria" to malfunction,
         "Urgente" to urgent,
-        "Email" to email
+        "Email" to email,
+        "Data Adicionado" to dateAdd
     )
 
 
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .set() define a informação do documento atual
-    db.collection("Avarias")
+    db.collection(MALFUNCTIONS_COLLECTION)
         .document("$room $machine")
         .set(data)
 }
@@ -153,7 +163,7 @@ fun seeMalfunction(
     room: String,
 ): Map<String, Any> {
     //  collectionReference foi criada para ser menos denso o código
-    val collectionReference = db.collection("Avarias")
+    val collectionReference = db.collection(MALFUNCTIONS_COLLECTION)
         .document("$room $name")
 
     //  Variáveis para guardar os valores que vêm da firestore
@@ -184,7 +194,7 @@ fun delMissing(
 ) {
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .delete() apaga o documento atual
-    db.collection("Falta QR")
+    db.collection(MISSING_COLLECTION)
         .document("$room $machine")
         .delete()
 }
@@ -196,10 +206,14 @@ fun completeMalfunction(
     machine: String,
     malfunction: String,    //  As variáveis malfunction, urgent e email têm as informações sobra a avaria, se é urgente e quem a alertou
     urgent: Boolean,
-    email: String
+    email: String,
+    dateAdd: String
 ) {
     //  Variável que consegue a data e hora local
-    val dateTime = LocalDateTime.now()
+    val dateTime = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    val formattedDateTime = dateTime.format(formatter);
+
     //  Variável que cria um map das informações
     val data = hashMapOf(
         "Bloco" to block,
@@ -207,18 +221,22 @@ fun completeMalfunction(
         "Dispositivo" to machine,
         "Avaria" to malfunction,
         "Urgente" to urgent,
-        "Email" to email
+        "Email" to email,
+        "Data Adicionado" to dateAdd,
+        "Data de conclusão" to formattedDateTime.toString()
     )
+
+
 
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .set() define a informação do documento atual
-    db.collection("Avarias Completas")
-        .document("$room $machine $dateTime")
+    db.collection(DONE_MALF_COLLECTION)
+        .document()
         .set(data)
 
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .delete() apaga o documento atual
-    db.collection("Avarias").document("$room $machine").delete()
+    db.collection(MALFUNCTIONS_COLLECTION).document("$room $machine").delete()
 }
 
 
@@ -226,7 +244,7 @@ fun completeMalfunction(
 fun qrExists(block: String, room: String, machine: String, onComplete: (Boolean) -> Unit) {
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .get() consegue o documentSnapshot
-    db.collection("Inventário")
+    db.collection(INVENTORY_COLLECTION)
         .document(block)
         .collection(room)
         .document(machine)
@@ -248,12 +266,13 @@ data class MalfunctionDocs(
     val room: String,
     val block: String,
     val urgent: Boolean,
+    val dateAdd: String
 )
 //  Procedimento para ir buscar todos os alertas de avaria á firestore
 fun fetchMalfList(setList: (List<MalfunctionDocs>) -> Unit) {
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .get() consegue o documentSnapshot
-    db.collection("Avarias")
+    db.collection(MALFUNCTIONS_COLLECTION)
         .get()
         .addOnSuccessListener { documents ->
             //  Cria um map de todos os campos do documento excluindo os nulos
@@ -262,10 +281,11 @@ fun fetchMalfList(setList: (List<MalfunctionDocs>) -> Unit) {
                 val room = document.getString("Sala")
                 val block = document.getString("Bloco")
                 val urgent = document.getBoolean("Urgente")
+                val dateAdd = document.getString("Data Adicionada")
 
                 //  Verifica se todos os campos necessários estão preenchidos
-                if (machine != null && room != null && block != null && urgent != null) {
-                    MalfunctionDocs(machine, room, block, urgent)
+                if (machine != null && room != null && block != null && urgent != null && dateAdd != null) {
+                    MalfunctionDocs(machine, room, block, urgent, dateAdd)
                 } else {
                     null
                 }
@@ -292,7 +312,7 @@ data class MissingQrDocs(
 fun getMissingQR(setList: (List<MissingQrDocs>) -> Unit) {
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .get() consegue o documentSnapshot
-    db.collection("Falta QR").get()
+    db.collection(MISSING_COLLECTION).get()
         .addOnSuccessListener {
             //  Cria um map de todos os campos do documento excluindo os nulos
             val itemList = it.mapNotNull { document ->
@@ -325,7 +345,7 @@ fun existentPcs(
 ) {
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .get() consegue o documentSnapshot
-    db.collection("Inventário")
+    db.collection(INVENTORY_COLLECTION)
         .document(block)
         .collection(room)
         .get()
@@ -346,19 +366,15 @@ suspend fun performVerification(email: String?): DocumentSnapshot {
     return withContext(Dispatchers.IO) {
         //  .collection() identifica a coleção, .document() identifica o documento
         //  .get() consegue o documentSnapshot
-        return@withContext db.collection("Admin").document("$email").get().await()
+        return@withContext db.collection(ADMIN_COLLECTION).document("$email").get().await()
     }
 }
 //  Verifica se o utilizador que está tentar fazer login é um admin ou não
 fun loginVerify(navController: NavController, email: String?, settingsManager: SettingsManager) {
-    //  Abre Coroutine
     CoroutineScope(Dispatchers.Main).launch {
-        //  Dá delay de 2 segundos
-        delay(1000)
-        // Chama a função performVerification
+        navController.navigate(Loading.route)
+        delay(2000)
         val result = performVerification(email)
-
-        // Verifica se existe correspondência
         if (result.exists()) {
             settingsManager.saveSetting("Admin", "Admin")
             navController.navigate(TabScreen.route)
@@ -369,11 +385,12 @@ fun loginVerify(navController: NavController, email: String?, settingsManager: S
 }
 
 
+
 //  Procedimento para verificar se existe aviso de falta de QR Code
 fun missQrExists(room: String, machine: String, onComplete: (Boolean) -> Unit) {
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .get() consegue o documentSnapshot
-    db.collection("Falta QR")
+    db.collection(MISSING_COLLECTION)
         .document("$room $machine")
         .get()
         .addOnSuccessListener { documentSnapshot ->
@@ -390,7 +407,7 @@ fun missQrExists(room: String, machine: String, onComplete: (Boolean) -> Unit) {
 fun getOptions(completion: (List<String>) -> Unit) {
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .get() consegue o documentSnapshot
-    db.collection("Padrões")
+    db.collection(DEFAULT_COLLECTION)
         .get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val documents = task.result
@@ -409,7 +426,7 @@ fun getOptions(completion: (List<String>) -> Unit) {
 fun malfunctionExists(room: String, machine: String, onComplete: (Boolean) -> Unit) {
     //  .collection() identifica a coleção, .document() identifica o documento
     //  .get() consegue o documentSnapshot
-    db.collection("Avarias")
+    db.collection(MALFUNCTIONS_COLLECTION)
         .document("$room $machine")
         .get()
         .addOnSuccessListener { documentSnapshot ->

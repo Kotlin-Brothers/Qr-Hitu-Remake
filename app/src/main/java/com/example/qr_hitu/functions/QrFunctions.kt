@@ -3,6 +3,7 @@ package com.example.qr_hitu.functions
 import android.graphics.Bitmap
 import android.graphics.ImageFormat
 import android.graphics.drawable.Drawable
+import android.graphics.pdf.PdfDocument
 import android.os.Environment
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -82,16 +83,23 @@ fun createQR(content: String): ImageBitmap {
 //  Faz download do QR Code
 fun downloadQR(bitmap: ImageBitmap, qrName: String) {
 
-    //  Acede ao diretório de downloads
-    val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-    //  Cria um ficheiro .png
-    val imageFile = File(downloadsDir, "$qrName.png")
-    val outputStream = FileOutputStream(imageFile)
-    bitmap.asAndroidBitmap().compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-    outputStream.flush()
-    outputStream.close()
+    val pdfDocument = PdfDocument()
+    val pageInfo = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, 1).create()
+    val page = pdfDocument.startPage(pageInfo)
+    val canvas = page.canvas
+    val androidBitmap = bitmap.asAndroidBitmap()
+    canvas.drawBitmap(androidBitmap, 0f, 0f, null)
+    pdfDocument.finishPage(page)
 
+    val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+    val pdfFile = File(downloadsDir, "$qrName.pdf")
+
+    val outputStream = FileOutputStream(pdfFile)
+    pdfDocument.writeTo(outputStream)
+    outputStream.close()
+    pdfDocument.close()
 }
+
 
 
 //  Analisa imagens da camera de QR codes
