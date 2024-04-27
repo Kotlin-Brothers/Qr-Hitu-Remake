@@ -80,7 +80,7 @@ fun LoginScreen(
     //  Abre Coroutine
     GlobalScope.launch {
         val latestVersion = UpdateVer(context).checkUpdate(version)
-        if(latestVersion != version) {
+        if(latestVersion != "") {
             updDialog.value = true
             UpdateVer(context).enqueueDownload(latestVersion)
         } else {
@@ -90,12 +90,11 @@ fun LoginScreen(
                 //  Vai buscar o email do utilizador atual
                 val email = Firebase.auth.currentUser?.email
                 //  Delay de 0.5 segundos
-                delay(500)
+                delay(750)
 
                 //  Caso exista utilizador atual
                 if (Firebase.auth.currentUser != null) {
                     //  Envia para a tela de Loading e verifica se é admin ou user
-                    navController.navigate(Loading.route)
                     loginVerify(navController, email, settingsManager)
                 }
             }

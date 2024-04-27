@@ -2,7 +2,6 @@ package com.example.qr_hitu.presentation.menu
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -34,15 +33,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.qr_hitu.R
-import com.example.qr_hitu.components.ForgotPass
+import com.example.qr_hitu.functions.saveFeedback
+import com.example.qr_hitu.presentation.ui.MainDialog
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun Feedback(navController: NavController){
 
-    val sendE = remember { mutableStateOf(false) }
     var enabled by remember { mutableStateOf(false) }
     var feedback by remember { mutableStateOf("") }
+    val infoDialog by remember { mutableStateOf(false) }
+    var thxDialog by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     Scaffold {
@@ -68,7 +69,7 @@ fun Feedback(navController: NavController){
 
                 OutlinedTextField(
                     value = feedback,
-                    onValueChange = { feedback = it },
+                    onValueChange = { feedback = it; if(feedback!="") enabled = true else enabled = false},
                     label = { Text("Feedback") },
                     placeholder = { Text("Feedback") },
                     singleLine = false,
@@ -112,7 +113,9 @@ fun Feedback(navController: NavController){
 
                 Button(
                     onClick = {
-                        //TODO - send to firebase
+                        saveFeedback(feedback)
+                        feedback = ""
+                        thxDialog = true
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -127,6 +130,24 @@ fun Feedback(navController: NavController){
                         stringResource(R.string.problemSend),
                         style = MaterialTheme.typography.labelLarge
                     )
+                }
+
+                if (infoDialog) {
+                    //TODO info Dialog
+                }
+                if (thxDialog) {
+                    MainDialog(
+                        title = { stringResource(R.string.feedbackTitle) },
+                        bodyText = { Text(stringResource(R.string.feedbackText), style = MaterialTheme.typography.bodyMedium) },
+                        confirmButton = { TextButton(onClick = { thxDialog = false }) {
+                            Text(
+                                text = stringResource(R.string.confirm),
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.onSecondary
+                            )
+                        } },
+                        dismissButton = { }
+                    ) {}
                 }
             }
         }

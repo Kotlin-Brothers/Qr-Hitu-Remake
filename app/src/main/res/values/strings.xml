@@ -168,6 +168,9 @@
     <string name="loginStext">Email/Password inválidos</string>
     //ResetPasswordSnackbar
     <string name="resetPassStext">Foi enviado email para a troca de password</string>
+    //FeedBackDialog
+    <string name="feedbackTitle">Obrigado</string>
+    <string name="feedbackText">O seu feedback foi enviado!</string>
     //Manual
     //User
     <string name="userManual">

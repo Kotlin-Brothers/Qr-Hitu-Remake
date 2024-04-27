@@ -1,6 +1,7 @@
 package com.example.qr_hitu.functions
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -13,6 +14,7 @@ import com.example.qr_hitu.components.UserChoices
 import com.example.qr_hitu.data.Constants.ADMIN_COLLECTION
 import com.example.qr_hitu.data.Constants.DEFAULT_COLLECTION
 import com.example.qr_hitu.data.Constants.DONE_MALF_COLLECTION
+import com.example.qr_hitu.data.Constants.FEEDBACK_COLLECTION
 import com.example.qr_hitu.data.Constants.INVENTORY_COLLECTION
 import com.example.qr_hitu.data.Constants.MALFUNCTIONS_COLLECTION
 import com.example.qr_hitu.data.Constants.MISSING_COLLECTION
@@ -373,7 +375,7 @@ suspend fun performVerification(email: String?): DocumentSnapshot {
 fun loginVerify(navController: NavController, email: String?, settingsManager: SettingsManager) {
     CoroutineScope(Dispatchers.Main).launch {
         navController.navigate(Loading.route)
-        delay(2000)
+        delay(1600)
         val result = performVerification(email)
         if (result.exists()) {
             settingsManager.saveSetting("Admin", "Admin")
@@ -436,4 +438,15 @@ fun malfunctionExists(room: String, machine: String, onComplete: (Boolean) -> Un
         .addOnFailureListener {
             onComplete(false)
         }
+}
+
+
+fun saveFeedback(feedback: String) {
+    val data = hashMapOf(
+        "Feedback" to feedback,
+    )
+
+    db.collection(FEEDBACK_COLLECTION)
+        .document(LocalDateTime.now().toString())
+        .set(data)
 }
